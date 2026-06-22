@@ -6689,9 +6689,10 @@ function renderConfigTable(containerId, tableData, field){
   const treatmentNames = {somax:'Somax', competidor:'Competidor', geral:'Tabela única'};
   const scopes = ((field.scope || 'comparativo') === 'geral') ? ['geral'] : ['somax','competidor'];
   el.innerHTML = scopes.map(trat => {
-    const colorClass = trat === 'somax' || trat === 'geral' ? 'treatment-header-somax' : 'treatment-header-competidor';
+    const colorClass = trat === 'somax' ? 'treatment-header-somax' : 'treatment-header-competidor';
     const tbl = tableData[trat];
-    let html = `<div class="treatment-card sample-table-card"><div class="treatment-header ${colorClass}"><span>${treatmentNames[trat]}</span></div><div class="treatment-body"><div class="punto-tabs">`;
+    const treatmentHeader = trat === 'geral' ? '' : `<div class="treatment-header ${colorClass}"><span>${treatmentNames[trat]}</span></div>`;
+    let html = `<div class="treatment-card sample-table-card">${treatmentHeader}<div class="treatment-body"><div class="punto-tabs">`;
     tbl.puntos.forEach((_,pi)=> html += `<button type="button" class="punto-tab ${pi===0?'active':''}" data-config-table="${containerId}" data-trat="${trat}" data-punto="${pi}">${escapeHtml(abaLabel)} ${pi+1}</button>`);
     html += `</div>`;
     tbl.puntos.forEach((p,pi)=>{
