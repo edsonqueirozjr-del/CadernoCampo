@@ -286,7 +286,76 @@ svg.ic{ width:20px; height:20px; stroke:currentColor; stroke-width:1.8; fill:non
 .etapa-check svg{ width:13px; height:13px; stroke:#fff; stroke-width:3; }
 .etapa-row-label{ flex:1; font-size:13.5px; font-weight:600; color:var(--ink); }
 .etapa-row.done .etapa-row-label{ color:var(--ink-soft); }
-.etapa-row-chev{ width:16px; height:16px; color:var(--ink-soft); flex-shrink:0; }
+.etapa-row-edit{ width:30px; height:30px; border-radius:50%; background:var(--leaf-light); color:var(--forest); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.etapa-row-edit svg{ width:16px; height:16px; }
+
+/* v156 - mini progresso visual em cada etapa do ensaio */
+.etapa-row.partial .etapa-check{ cursor:pointer; }
+.etapa-row.partial .etapa-check:active{ filter:brightness(.96); }
+
+.etapa-row{
+  position:relative;
+  align-items:center;
+  padding-bottom:18px;
+}
+.etapa-row-content{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.etapa-row-main{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+.etapa-row-label{
+  min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.etapa-progress-line{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  width:100%;
+}
+.etapa-progress-track{
+  height:5px;
+  flex:1;
+  min-width:0;
+  background:var(--line);
+  border-radius:999px;
+  overflow:hidden;
+}
+.etapa-progress-fill{
+  display:block;
+  height:100%;
+  width:0%;
+  background:#C9CEC8;
+  border-radius:999px;
+  transition:width .22s ease;
+}
+.etapa-progress-percent{
+  width:38px;
+  text-align:right;
+  font-size:11.5px;
+  font-weight:900;
+  color:var(--ink-soft);
+  font-variant-numeric:tabular-nums;
+}
+.etapa-row.done .etapa-progress-fill{ background:var(--leaf); }
+.etapa-row.done .etapa-progress-percent{ color:var(--forest); }
+.etapa-row.partial .etapa-progress-fill{ background:var(--gold); }
+.etapa-row.partial .etapa-progress-percent{ color:#8A6418; }
+.etapa-row.empty .etapa-progress-fill{ background:#C9CEC8; }
+@media(max-width:360px){
+  .etapa-row{ padding-left:12px; padding-right:12px; }
+  .etapa-progress-percent{ width:34px; font-size:11px; }
+}
 
 /* ---------- wizard ---------- */
 .step-indicator{
@@ -382,12 +451,12 @@ textarea{ min-height:64px; resize:vertical; line-height:1.45; }
 .product-picker-wrap{ margin-bottom:16px; }
 .product-add-btn{
   width:auto;
-  border:1.5px solid var(--leaf);
-  background:var(--surface);
-  color:var(--leaf);
+  border:none;
+  background:var(--forest);
+  color:#fff;
   border-radius:10px;
-  padding:10px 14px;
-  font-size:13.5px;
+  padding:13px 14px;
+  font-size:14.5px;
   font-weight:800;
   display:inline-flex;
   align-items:center;
@@ -395,7 +464,7 @@ textarea{ min-height:64px; resize:vertical; line-height:1.45; }
   cursor:pointer;
 }
 .product-add-btn svg{ width:17px; height:17px; }
-.product-add-btn:active{ background:var(--leaf-light); }
+.product-add-btn:active{ background:var(--forest-dark); }
 .product-selected-card{
   border:1.5px solid var(--leaf);
   background:var(--leaf-light);
@@ -649,8 +718,6 @@ textarea{ min-height:64px; resize:vertical; line-height:1.45; }
 .eval-item.collapsible.empty-required .eval-item-toggle{ background:var(--leaf-light); color:var(--forest); }
 
 
-
-
 /* v134 - Evaluación: fotos e tablas como títulos simples, sem emojis e sem card externo */
 .eval-date-block{
   margin:10px 0 14px;
@@ -734,7 +801,6 @@ textarea{ min-height:64px; resize:vertical; line-height:1.45; }
 }
 
 
-
 /* v136 - Evaluación: fecha, fotos, preguntas e tabla como títulos simples; seções recolhíveis */
 .eval-date-block{ margin:0 0 16px; }
 .eval-date-title,
@@ -785,7 +851,6 @@ textarea{ min-height:64px; resize:vertical; line-height:1.45; }
 .eval-plain-panel{ margin-bottom:16px; }
 .eval-photo-block{ margin:0; }
 .eval-tables-list{ margin-bottom:0; }
-
 
 
 /* v137 - Evaluación: títulos curtos e data alinhada dentro do campo */
@@ -870,6 +935,35 @@ textarea{ min-height:64px; resize:vertical; line-height:1.45; }
 .eval-accordion-item.open .eval-arrow{ transform:rotate(90deg); }
 .eval-accordion-panel{ display:none; padding:0 14px 14px; }
 .eval-accordion-item.open .eval-accordion-panel{ display:block; }
+/* v170 - Tabelas de avaliação sem card externo: título simples + tabela direta */
+.eval-accordion-item.table-content-only{
+  border:0 !important;
+  background:transparent !important;
+  border-radius:0 !important;
+  overflow:visible !important;
+  margin-bottom:16px;
+}
+.eval-table-simple-title{
+  font-size:13.5px;
+  font-weight:900;
+  color:var(--forest);
+  margin:0 0 10px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.eval-table-simple-title .dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--leaf);
+  flex-shrink:0;
+}
+.eval-accordion-item.table-content-only .eval-accordion-panel{
+  display:block;
+  padding:0 !important;
+}
+
 .eval-accordion-panel textarea{ min-height:138px; line-height:1.5; }
 .eval-accordion-item.empty{ border-color:var(--line); background:var(--surface); }
 .eval-accordion-item.empty .eval-accordion-toggle{ color:var(--ink); }
@@ -1213,7 +1307,8 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 .product-form-card.open{ display:block; }
 .products-header-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
 .products-count{ font-size:12px; font-weight:800; color:var(--forest); background:var(--leaf-light); border-radius:999px; padding:6px 10px; white-space:nowrap; }
-.btn-add-product{ width:100%; margin-bottom:14px; }
+.btn-add-product{ width:100%; height:46px; box-sizing:border-box; margin-bottom:14px; }
+#btn-eval-new{ margin-bottom:8px; }
 .product-admin-actions{ display:flex; gap:6px; flex-shrink:0; }
 .product-mini-btn{
   border:1px solid var(--line);
@@ -1368,7 +1463,7 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 .eval-admin-drag-handle{ width:34px; height:34px; border:1px solid var(--line); border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--ink-soft); background:var(--surface); font-size:19px; font-weight:900; line-height:1; }
 .eval-admin-body{ flex:1; min-width:0; }
 .eval-admin-title{ font-size:14px; font-weight:800; color:var(--forest); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.eval-admin-meta{ font-size:12px; color:var(--ink-soft); margin-top:4px; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.eval-admin-meta{ font-size:11.2px; color:var(--ink-soft); margin-top:4px; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; letter-spacing:-0.1px; }
 .eval-admin-actions{ display:flex; gap:6px; flex-shrink:0; }
 .eval-icon-btn{ width:34px; height:34px; border:1px solid var(--line); background:var(--paper); color:var(--ink); border-radius:9px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
 .eval-icon-btn svg{ width:17px; height:17px; }
@@ -1377,6 +1472,16 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 .eval-field-chip{ display:inline-flex; align-items:center; border-radius:999px; background:var(--leaf-light); color:var(--forest); padding:3px 8px; font-size:10.5px; font-weight:800; margin:2px 4px 2px 0; }
 .eval-field-chip.question{ background:var(--leaf-light); color:var(--forest); }
 .eval-field-chip.table{ background:#FFF3D7; color:#8A6418; }
+
+/* v153 - tipos de resposta para perguntas */
+.question-type-options{display:flex;gap:8px;margin-top:6px;}
+.question-type-options .chip{flex:1;text-align:center;border-radius:10px;padding:9px 8px;font-size:12.5px;}
+.question-options-wrap{display:none;}
+.question-options-wrap.show{display:block;}
+.dyn-choice-list{display:flex;flex-direction:column;gap:8px;}
+.dyn-choice-option{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:800;color:var(--ink);cursor:pointer;}
+.dyn-choice-option input{accent-color:var(--forest);width:18px;height:18px;flex-shrink:0;}
+.dyn-choice-option:has(input:checked){border-color:var(--leaf);background:var(--leaf-light);color:var(--forest);}
 
 
 .eval-field-admin-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
@@ -1394,7 +1499,7 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 .eval-date-edit-btn svg{width:16px;height:16px;}
 .eval-date-confirm-btn{border:1px solid var(--leaf);background:var(--leaf);color:#fff;border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;cursor:pointer;flex-shrink:0;line-height:1;}
 .eval-date-edit-input{width:100%;border:1.5px solid var(--leaf);border-radius:8px;padding:7px 10px;font-size:13px;font-weight:800;color:var(--forest);background:var(--surface);}
-.eval-date-add-btn{width:100%;height:46px;border:1.5px solid var(--line);background:var(--surface);color:var(--forest);border-radius:10px;font-size:14px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.eval-date-add-btn{width:100%;height:46px;border:none;background:var(--forest);color:#fff;border-radius:10px;font-size:14px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
 
 .eval-field-admin-title{font-size:13px;font-weight:800;color:var(--forest);}
 .eval-field-admin-meta{font-size:11.5px;color:var(--ink-soft);margin-top:3px;}
@@ -1453,8 +1558,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 @media print{
   .detail-collapsible-body{display:block !important;}
 }
-
-
 
 
 /* v152 - Escopo da tabela: comparativo vs tabela única do ensaio */
@@ -1558,11 +1661,24 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 .eval-field-admin-card.question-card .eval-field-admin-title{color:var(--forest);}
 
 .admin-config-panel .field-group:last-child{ margin-bottom:0; }
+/* v171 - Ordenação das seções do formulário da avaliação */
+.eval-secciones-list{display:flex;flex-direction:column;gap:12px;}
+.eval-secciones-list .admin-config-accordion{margin-bottom:0;}
+.admin-config-drag-handle{
+  width:34px;height:34px;border:1px solid var(--line);border-radius:9px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  color:var(--ink-soft);background:var(--surface);font-size:19px;font-weight:900;line-height:1;
+  cursor:grab;touch-action:none;
+}
+.admin-config-drag-handle:active{cursor:grabbing;}
+.admin-config-accordion[draggable="true"]{cursor:grab;}
+.admin-config-accordion.dragging{opacity:.55;}
+.admin-config-accordion.drag-over{border-color:var(--leaf)!important;background:var(--leaf-light)!important;}
+
 #accordion-date .admin-config-toggle svg,
 #accordion-photo .admin-config-toggle svg{ color:var(--leaf); }
 #eval-form-card:not(.open) .product-form-actions{ display:none !important; }
 #eval-form-card.open .product-form-actions{ display:flex !important; }
-
 
 
 /* v109 - correção layout dos campos de quantidade/dose/total */
@@ -1637,7 +1753,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
   }
   .treatment-body .field-spacer{display:none !important;}
 }
-
 
 
 /* v110 - correção definitiva layout mobile dos campos de quantidade/dose/total */
@@ -1829,7 +1944,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 }
 
 
-
 /* v113 - layout definitivo de aplicação: campos calibrados e sem sobreposição */
 .treatment-body .dose-calc-row,
 .treatment-body .row-2.row-2-balanced{
@@ -1968,7 +2082,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 }
 
 
-
 /* v114 - ajuste UX: card do produto mais compacto e mescla com mesmo padrão */
 .treatment-body .product-picker-wrap{
   margin-bottom:12px !important;
@@ -2080,7 +2193,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
   }
   .treatment-body .row-2.row-2-balanced .field-spacer{ display:none !important; }
 }
-
 
 
 /* v115 - correção final Mescla Somax mobile
@@ -2277,7 +2389,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 .treatment-body .mixture-section #comp-mescla-details .dose-suffix{
   height:46px !important;
 }
-
 
 
 /* v117 - ajuste fino adicional: reduzir um pouco mais a altura dos campos, mantendo layout e regras */
@@ -2686,7 +2797,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 }
 
 
-
 /* v121 - correção dos cards/listas de produtos na Implementación: nome e metadados separados, sem overflow */
 .step[data-step="3"] .product-picker-panel{
   overflow:hidden !important;
@@ -2832,7 +2942,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
   background:#FFF1F0 !important;
   color:var(--danger) !important;
 }
-
 
 
 /* v123 - UX final Implementación: card compacto, botão agregar condicional e ações 50/50 */
@@ -3005,7 +3114,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 .step[data-step="3"] .product-delete-btn.btn-trash-sq:active{ background:#F7D8D1 !important; border-color:var(--danger) !important; }
 
 
-
 /* v138 - Evaluación: campo Fecha com mesma altura das perguntas fechadas e sem seta lateral; Preguntas recolhido por padrão */
 .eval-date-block input[type="date"],
 .eval-date-block select,
@@ -3069,7 +3177,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 }
 
 
-
 /* v143 - Área administrativa: formulário de avaliação sem card externo */
 #eval-form-card{
   background:transparent !important;
@@ -3126,6 +3233,1372 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
   }
 }
 
+
+/* v154 - Datos agronómicos: todos os campos com altura visual exata de 38px */
+.step[data-step="4"] input[type="text"],
+.step[data-step="4"] input[type="number"],
+.step[data-step="4"] input[type="date"],
+.step[data-step="4"] select,
+.step[data-step="4"] .estadio-picker-trigger{
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  box-sizing:border-box !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  line-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+}
+.step[data-step="4"] .estadio-picker-trigger{
+  justify-content:space-between !important;
+}
+.step[data-step="4"] .estadio-picker-trigger span{
+  line-height:1.15 !important;
+  display:block !important;
+}
+.step[data-step="4"] input[type="date"]{
+  display:block !important;
+  line-height:38px !important;
+}
+.step[data-step="4"] input[type="date"]::-webkit-date-and-time-value{
+  min-height:38px !important;
+  height:38px !important;
+  line-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+}
+.step[data-step="4"] input[type="date"]::-webkit-calendar-picker-indicator{
+  margin:0 !important;
+  padding:0 !important;
+  height:18px !important;
+  width:18px !important;
+  align-self:center !important;
+}
+.step[data-step="4"] .estadio-picker-trigger svg{
+  align-self:center !important;
+  margin:0 !important;
+}
+
+
+/* v162 - Fecha: campo único com nome à esquerda e data à direita */
+.eval-date-field-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:0;
+}
+.eval-date-row{
+  width:100%;
+}
+.eval-date-combo{
+  width:100%;
+  height:38px;
+  min-height:38px;
+  max-height:38px;
+  box-sizing:border-box;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--surface);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 10px 0 12px;
+  overflow:hidden;
+}
+.eval-date-combo-label{
+  flex:1;
+  min-width:0;
+  color:var(--ink);
+  font-size:13.5px;
+  font-weight:800;
+  line-height:1;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.eval-date-combo input[type="date"]{
+  flex:0 0 142px;
+  width:142px !important;
+  height:36px !important;
+  min-height:36px !important;
+  max-height:36px !important;
+  box-sizing:border-box !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  padding:0 !important;
+  margin:0 !important;
+  color:var(--ink) !important;
+  font-size:13.5px !important;
+  font-weight:500 !important;
+  line-height:36px !important;
+  text-align:right;
+  outline:none !important;
+}
+.eval-date-combo input[type="date"]:focus{
+  outline:none !important;
+  border:0 !important;
+}
+.eval-date-combo:focus-within{
+  outline:2px solid var(--leaf);
+  outline-offset:1px;
+  border-color:var(--leaf);
+}
+.eval-date-combo input[type="date"]::-webkit-date-and-time-value{
+  text-align:right;
+}
+.eval-date-combo input[type="date"]::-webkit-calendar-picker-indicator{
+  margin:0 0 0 4px !important;
+  padding:0 !important;
+  width:16px !important;
+  height:16px !important;
+}
+@media(max-width:360px){
+  .eval-date-combo{gap:8px;padding-left:10px;padding-right:8px;}
+  .eval-date-combo-label{font-size:13px;}
+  .eval-date-combo input[type="date"]{flex-basis:132px;width:132px !important;font-size:13px !important;}
+}
+
+
+/* v170 - Etapas: remover botão superior de voltar e manter navegação inferior fixa */
+#wizard-topbar-back-spacer,
+#screen-wizard .topbar #btn-wizard-back{
+  display:none !important;
+}
+#screen-wizard .topbar{
+  gap:0 !important;
+}
+#screen-wizard .wizard-body{
+  padding-bottom:calc(128px + env(safe-area-inset-bottom)) !important;
+}
+#screen-wizard .wizard-nav{
+  position:fixed !important;
+  bottom:0 !important;
+  left:0 !important;
+  right:0 !important;
+  z-index:60 !important;
+}
+
+
+/* ajuste implementação: Somax e Competidor recolhíveis sem descrição externa */
+.implementation-panel{
+  margin-bottom:8px;
+}
+.implementation-panel .implementation-toggle{
+  width:100%;
+  border:0;
+  cursor:pointer;
+  font-family:inherit;
+  text-align:left;
+}
+.implementation-panel .implementation-arrow{
+  font-size:18px;
+  line-height:1;
+  transition:transform .18s ease;
+}
+.implementation-panel.collapsed .implementation-arrow{
+  transform:rotate(-90deg);
+}
+.implementation-panel.collapsed .treatment-body{
+  display:none;
+}
+.implementation-panel.collapsed{
+  overflow:hidden;
+}
+
+
+/* vXXX - padrão global: 8px entre título de seção e primeiro componente */
+.section-title{
+  margin-bottom:8px !important;
+}
+.section-title + :is(
+  .treatment-card,
+  .card,
+  .field-group,
+  .row-2,
+  .photo-add-btn,
+  .eval-plain-section,
+  .eval-section-card,
+  .eval-questions-list,
+  .eval-tables-list,
+  .collection-structure-card,
+  .table-preview-card,
+  .detail-products-list,
+  .detail-answers-list,
+  .detail-compare-grid,
+  .etapa-list,
+  .admin-config-accordion,
+  .products-header-row,
+  .products-list,
+  .product-search-wrap,
+  .product-filter-wrap
+){
+  margin-top:0 !important;
+}
+.step[data-step="3"] > .section-title{
+  margin-bottom:8px !important;
+}
+.step[data-step="3"] > .section-title + .treatment-card{
+  margin-top:0 !important;
+}
+
+
+/* vXXX - ajuste final solicitado: topo -> Implementación = 8px; Somax -> Competidor = 8px */
+#screen-wizard .wizard-body{
+  padding-top:8px !important;
+}
+.step[data-step="3"] > .section-title{
+  margin-bottom:8px !important;
+}
+.step[data-step="3"] .implementation-panel{
+  margin-bottom:8px !important;
+}
+
+
+/* vXXX - Produto/Mescla compactos na Implementación */
+.step[data-step="3"] .product-selected-card.product-selected-card-compact{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:center !important;
+  gap:8px !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  padding:0 8px 0 12px !important;
+  border:1px solid var(--line) !important;
+  border-radius:10px !important;
+  background:var(--surface) !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-icon,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-title,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-meta{
+  display:none !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-info{
+  display:block !important;
+  min-width:0 !important;
+  overflow:hidden !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-name{
+  display:block !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+  line-height:38px !important;
+  color:var(--forest) !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-actions{
+  display:flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  flex-shrink:0 !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  width:32px !important;
+  height:32px !important;
+  min-width:32px !important;
+  max-width:32px !important;
+  padding:0 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:9px !important;
+  flex:0 0 32px !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn{
+  border:1px solid var(--line) !important;
+  background:var(--surface) !important;
+  color:var(--forest) !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn svg,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn svg{
+  width:17px !important;
+  height:17px !important;
+}
+.step[data-step="3"] .product-picker-wrap,
+.step[data-step="3"] .mixture-section{
+  margin-bottom:12px !important;
+}
+.step[data-step="3"] .field-label{
+  margin-bottom:6px !important;
+}
+
+
+/* Correção segura: lista do seletor de produtos com altura dinâmica.
+   Mantém 38px apenas no campo selecionado e nos campos de dose/quantidade. */
+.step[data-step="3"] .treatment-body .product-picker-panel{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  overflow:visible !important;
+}
+.step[data-step="3"] .treatment-body .product-option{
+  height:auto !important;
+  min-height:56px !important;
+  max-height:none !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  justify-content:center !important;
+  gap:3px !important;
+  padding:10px 12px !important;
+  line-height:1.25 !important;
+  white-space:normal !important;
+  overflow:visible !important;
+  text-align:left !important;
+}
+.step[data-step="3"] .treatment-body .product-option-name,
+.step[data-step="3"] .treatment-body .product-option-meta{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  word-break:normal !important;
+  overflow-wrap:anywhere !important;
+  line-height:1.25 !important;
+}
+.step[data-step="3"] .treatment-body .product-option-name{
+  font-size:13.5px !important;
+  font-weight:900 !important;
+}
+.step[data-step="3"] .treatment-body .product-option-meta{
+  font-size:11.5px !important;
+  font-weight:600 !important;
+  color:var(--ink-soft) !important;
+}
+
+
+/* vFinal - Datos agronómicos limpo + estádio dentro do próprio campo */
+.step[data-step="4"]{
+  padding-top:0 !important;
+}
+.step[data-step="4"] > .row-2:first-child{
+  margin-top:0 !important;
+}
+.step[data-step="4"] .card{
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+  box-shadow:none !important;
+}
+.step[data-step="4"] .estadio-selected-chips{
+  display:none !important;
+}
+.step[data-step="4"] .estadio-picker-trigger{
+  overflow:hidden !important;
+  white-space:nowrap !important;
+}
+.step[data-step="4"] .estadio-picker-trigger span{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  overflow:hidden !important;
+  white-space:nowrap !important;
+  text-overflow:ellipsis !important;
+  line-height:1.15 !important;
+}
+
+
+/* v185 - Detalhe: barra inferior fixa no mesmo padrão Volver/Siguiente */
+#screen-detail .detail-body{
+  padding-bottom:calc(116px + env(safe-area-inset-bottom)) !important;
+}
+#screen-detail .detail-actions-fixed{
+  position:fixed !important;
+  left:50% !important;
+  right:auto !important;
+  bottom:0 !important;
+  transform:translateX(-50%) !important;
+  width:100% !important;
+  max-width:480px !important;
+  z-index:9999 !important;
+  display:flex !important;
+  flex-direction:row !important;
+  gap:10px !important;
+  align-items:center !important;
+  justify-content:center !important;
+  margin:0 !important;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom)) !important;
+  background:var(--surface) !important;
+  border-top:1px solid var(--line) !important;
+  box-shadow:0 -8px 22px rgba(27,67,50,.10) !important;
+}
+#screen-detail .detail-actions-fixed .btn{
+  flex:1 1 0 !important;
+  width:auto !important;
+  height:42px !important;            /* mesmo porte de Volver/Siguiente (antes 56px) */
+  min-height:42px !important;
+  max-height:42px !important;
+  padding:0 13px !important;         /* mesmo respiro interno de .btn (padding:13px) */
+  border-radius:11px !important;     /* igual a .btn */
+  font-size:14.5px !important;       /* igual a .btn */
+  font-weight:700 !important;        /* igual a .btn (antes 800) */
+  line-height:1 !important;
+  display:flex !important;
+  align-items:center !important;     /* alinhamento vertical de texto + ícone */
+  justify-content:center !important;
+  gap:7px !important;                /* mesmo espaçamento ícone/texto de .btn (antes 8px) */
+  white-space:nowrap !important;
+  box-sizing:border-box !important;
+}
+#screen-detail .detail-actions-fixed .btn-report{
+  background:var(--forest) !important;
+  color:#fff !important;
+  border:1.5px solid var(--forest) !important;
+  box-shadow:0 6px 16px rgba(27,67,50,.18) !important;
+}
+#screen-detail .detail-actions-fixed .btn-delete-fixed{
+  background:var(--paper) !important;   /* mesma base do secundário (Volver) */
+  color:var(--danger) !important;       /* variante destrutiva: vermelho */
+  border:1.5px solid var(--danger) !important;
+  box-shadow:none !important;
+}
+#screen-detail .detail-actions-fixed .btn-delete-fixed:active{
+  background:#FFF4F2 !important;
+  border-color:var(--danger) !important;
+}
+#screen-detail .detail-actions-fixed .btn svg{
+  width:17px !important;             /* igual a .btn svg (antes 18px) */
+  height:17px !important;
+  flex-shrink:0 !important;
+}
+@media(max-width:360px){
+  #screen-detail .detail-actions-fixed{ gap:10px !important; padding-left:16px !important; padding-right:16px !important; }
+  #screen-detail .detail-actions-fixed .btn{ height:42px !important; min-height:42px !important; max-height:42px !important; font-size:14.5px !important; padding:0 12px !important; }
+}
+@media print{
+  #screen-detail .detail-actions-fixed{ display:none !important; }
+}
+
+</style>
+
+<style id="final-spacing-progress-content-22px">
+/* Ajuste visual: respiro entre indicador de progresso e conteúdo principal do wizard */
+#screen-wizard .wizard-body{
+  padding-top:22px !important;
+}
+#screen-wizard .step[data-step="1"],
+#screen-wizard .step[data-step="2"],
+#screen-wizard .step[data-step="3"],
+#screen-wizard .step[data-step="4"]{
+  margin-top:0 !important;
+  padding-top:0 !important;
+}
+#screen-wizard .step[data-step="1"] > :first-child,
+#screen-wizard .step[data-step="2"] > :first-child,
+#screen-wizard .step[data-step="3"] > :first-child,
+#screen-wizard .step[data-step="4"] > :first-child{
+  margin-top:0 !important;
+}
+</style>
+
+<style id="progress-fill-width-final-fix">
+/* UX/UI: barra visual sincronizada com o percentual exibido nos cards de progresso. */
+.etapa-progress-track{overflow:hidden!important;}
+.etapa-progress-fill{display:block!important;height:100%!important;min-width:0!important;}
+.etapa-row.done .etapa-progress-fill{width:100%!important;background:var(--leaf)!important;}
+.etapa-row.empty .etapa-progress-fill{width:0%!important;}
+</style>
+
+<!-- ============================================================= -->
+<!-- AJUSTES VISUAIS CONSOLIDADOS (overrides incrementais)          -->
+<!-- Blocos antes dispersos apos </script>/</body>/</html> foram    -->
+<!-- reunidos aqui no fim do <head>, preservando a ORDEM original   -->
+<!-- (cascade inalterado). Manter este como o ultimo ponto de       -->
+<!-- override; nao reintroduzir <style> fora do <head>.             -->
+<!-- ============================================================= -->
+<style id="fix-produto-mescla-compacto-38">
+/* Correção final: Produto/Mescla em campo único, 38px, sem corte/sobreposição */
+.step[data-step="3"] .product-selected-card.product-selected-card-compact{
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  width:100% !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  padding:0 0 0 12px !important;
+  margin:0 !important;
+  gap:8px !important;
+  border:1px solid var(--line) !important;
+  border-radius:10px !important;
+  background:var(--surface) !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  position:relative !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-icon,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-title,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-meta{
+  display:none !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-info{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  overflow:hidden !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-name{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:var(--forest) !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+  line-height:38px !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  text-align:left !important;
+  word-break:normal !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-actions{
+  flex:0 0 auto !important;
+  width:auto !important;
+  height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:4px !important;
+  margin:0 !important;
+  padding:0 !important;
+  align-self:center !important;
+  position:static !important;
+  z-index:2 !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  width:38px !important;
+  height:38px !important;
+  min-width:38px !important;
+  max-width:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  flex:0 0 38px !important;
+  margin:0 !important;
+  padding:0 !important;
+  border-radius:10px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+  position:static !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn svg,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn svg{
+  width:17px !important;
+  height:17px !important;
+  display:block !important;
+}
+.step[data-step="3"] #somax-product-selected,
+.step[data-step="3"] #somax-mescla-selected{
+  width:100% !important;
+  overflow:visible !important;
+}
+</style>
+<style id="fix-produto-mescla-38px-final">
+/* Correção final: Produto/Mescla em campo único 38px, sem botões visuais */
+.step[data-step="3"] .product-selected-card.product-selected-card-compact{
+  display:flex !important;
+  align-items:center !important;
+  width:100% !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  padding:0 0 0 12px !important;
+  margin:0 !important;
+  border:1px solid var(--line) !important;
+  border-radius:10px !important;
+  background:var(--surface) !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-info{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  overflow:hidden !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-name{
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:var(--forest) !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+  line-height:38px !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  text-align:left !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-actions{
+  flex:0 0 auto !important;
+  height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  width:38px !important;
+  height:38px !important;
+  min-width:38px !important;
+  max-width:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  flex:0 0 38px !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  outline:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+  line-height:1 !important;
+  color:var(--forest) !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  color:var(--danger) !important;
+  border-left:1px solid var(--line) !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn svg,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn svg{
+  width:18px !important;
+  height:18px !important;
+  display:block !important;
+  stroke:currentColor !important;
+  flex:none !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-icon,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-title,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-meta{
+  display:none !important;
+}
+</style>
+<style id="fix-produto-mescla-38px-alinhamento-final">
+/* Correção definitiva: Produto/Mescla e campos da Implementación com altura visual 38px */
+.step[data-step="3"] .product-selected-card.product-selected-card-compact{
+  display:flex !important;
+  align-items:center !important;
+  width:100% !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  padding:0 0 0 12px !important;
+  margin:0 !important;
+  gap:0 !important;
+  border:1px solid var(--line) !important;
+  border-radius:10px !important;
+  background:var(--surface) !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-info{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  overflow:hidden !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-name{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:var(--forest) !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+  line-height:1.2 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  text-align:left !important;
+  word-break:normal !important;
+  overflow-wrap:normal !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-actions{
+  flex:0 0 auto !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  align-self:center !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  width:38px !important;
+  height:38px !important;
+  min-width:38px !important;
+  max-width:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  flex:0 0 38px !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  outline:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+  line-height:1 !important;
+  position:relative !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn{
+  color:var(--forest) !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  color:var(--danger) !important;
+  border-left:0 !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn::after{
+  content:"" !important;
+  position:absolute !important;
+  right:0 !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:1px !important;
+  height:16px !important;
+  background:var(--line) !important;
+  border-radius:1px !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn svg,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn svg{
+  width:18px !important;
+  height:18px !important;
+  display:block !important;
+  stroke:currentColor !important;
+  flex:none !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-icon,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-title,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-meta{
+  display:none !important;
+}
+.step[data-step="3"] .treatment-body input[type="text"],
+.step[data-step="3"] .treatment-body input[type="number"],
+.step[data-step="3"] .treatment-body select,
+.step[data-step="3"] .treatment-body .dose-input-wrap input,
+.step[data-step="3"] .treatment-body .calc-output input[readonly],
+.step[data-step="3"] .treatment-body .qty-stepper input,
+.step[data-step="3"] .treatment-body .qty-step-btn{
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+}
+.step[data-step="3"] .treatment-body input[type="text"],
+.step[data-step="3"] .treatment-body input[type="number"],
+.step[data-step="3"] .treatment-body select,
+.step[data-step="3"] .treatment-body .dose-input-wrap input,
+.step[data-step="3"] .treatment-body .calc-output input[readonly],
+.step[data-step="3"] .treatment-body .qty-stepper input{
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  line-height:38px !important;
+}
+.step[data-step="3"] .treatment-body .qty-step-btn{
+  justify-content:center !important;
+  line-height:1 !important;
+  padding:0 !important;
+}
+.step[data-step="3"] .treatment-body .dose-suffix{
+  height:38px !important;
+  line-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+}
+</style>
+<style id="fix-step3-implementacion-css-limpo-final">
+/* =========================================================
+   STEP 3 · Implementación del ensayo
+   Ajuste conservador: somente layout visual dos campos Produto/Mescla,
+   Quantidade, Dosis e Cantidad total. Sem alteração de JS/lógica.
+   ========================================================= */
+
+/* Campo único Produto/Mescla */
+.step[data-step="3"] .product-selected-card.product-selected-card-compact{
+  width:100% !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:0 !important;
+  padding:0 0 0 12px !important;
+  margin:0 0 8px 0 !important;
+  border:1px solid var(--line) !important;
+  border-radius:10px !important;
+  background:var(--surface) !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-info{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-name{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  color:var(--forest) !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+  line-height:1.1 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  word-break:normal !important;
+  overflow-wrap:normal !important;
+  text-align:left !important;
+  transform:none !important;
+  position:static !important;
+  box-sizing:border-box !important;
+}
+
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-actions{
+  flex:0 0 auto !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  align-self:center !important;
+  box-sizing:border-box !important;
+}
+
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  width:38px !important;
+  height:38px !important;
+  min-width:38px !important;
+  max-width:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  flex:0 0 38px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  outline:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  line-height:1 !important;
+  position:relative !important;
+  top:auto !important;
+  transform:none !important;
+  box-sizing:border-box !important;
+  -webkit-appearance:none !important;
+  appearance:none !important;
+}
+
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn{ color:var(--forest) !important; }
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{ color:var(--danger) !important; }
+
+/* Separador curto entre trocar e excluir */
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn::after{
+  content:"" !important;
+  position:absolute !important;
+  right:0 !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:1px !important;
+  height:22px !important;
+  min-height:22px !important;
+  max-height:22px !important;
+  background:var(--line) !important;
+  border-radius:1px !important;
+}
+
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn svg,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn svg{
+  width:18px !important;
+  height:18px !important;
+  display:block !important;
+  flex:0 0 18px !important;
+  stroke:currentColor !important;
+  margin:0 !important;
+  padding:0 !important;
+  transform:none !important;
+}
+
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-icon,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-title,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-meta{
+  display:none !important;
+}
+
+/* Campos numéricos e calculados: altura visual única de 38px */
+.step[data-step="3"] .treatment-body input[type="text"],
+.step[data-step="3"] .treatment-body input[type="number"],
+.step[data-step="3"] .treatment-body select,
+.step[data-step="3"] .treatment-body .qty-stepper input,
+.step[data-step="3"] .treatment-body .dose-input-wrap input,
+.step[data-step="3"] .treatment-body .calc-output input[readonly],
+.step[data-step="3"] .treatment-body .qty-step-btn{
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  box-sizing:border-box !important;
+}
+
+.step[data-step="3"] .treatment-body input[type="text"],
+.step[data-step="3"] .treatment-body input[type="number"],
+.step[data-step="3"] .treatment-body select,
+.step[data-step="3"] .treatment-body .qty-stepper input,
+.step[data-step="3"] .treatment-body .dose-input-wrap input,
+.step[data-step="3"] .treatment-body .calc-output input[readonly]{
+  display:block !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  line-height:38px !important;
+  vertical-align:middle !important;
+}
+
+.step[data-step="3"] .treatment-body .qty-stepper{
+  display:grid !important;
+  grid-template-columns:38px minmax(0,1fr) 38px !important;
+  gap:8px !important;
+  align-items:center !important;
+}
+
+.step[data-step="3"] .treatment-body .qty-step-btn{
+  width:38px !important;
+  min-width:38px !important;
+  max-width:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0 !important;
+  line-height:1 !important;
+}
+
+.step[data-step="3"] .treatment-body .dose-input-wrap{
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  position:relative !important;
+}
+
+.step[data-step="3"] .treatment-body .dose-suffix{
+  position:absolute !important;
+  top:0 !important;
+  right:12px !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  line-height:1 !important;
+  transform:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  pointer-events:none !important;
+}
+</style>
+<style id="final-visual-cleanup-implementacion">
+/* Ajuste final controlado: espaçamento superior padrão das etapas */
+.wizard-body{
+  padding-top:12px !important;
+}
+.step[data-step="1"],
+.step[data-step="2"],
+.step[data-step="3"],
+.step[data-step="4"]{
+  margin-top:0 !important;
+  padding-top:0 !important;
+}
+.step[data-step="1"] > :first-child,
+.step[data-step="2"] > :first-child,
+.step[data-step="3"] > :first-child,
+.step[data-step="4"] > :first-child{
+  margin-top:0 !important;
+}
+.step[data-step="3"] .section-title{
+  margin-bottom:8px !important;
+}
+
+/* Ajuste final controlado: Produto/Mescla compactos na Implementación */
+.step[data-step="3"] .treatment-body .product-picker-wrap{
+  margin-bottom:12px !important;
+}
+.step[data-step="3"] .treatment-body .mixture-section{
+  margin-top:14px !important;
+  padding-top:14px !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact{
+  width:100% !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:0 !important;
+  padding:0 0 0 12px !important;
+  margin:0 0 8px 0 !important;
+  border:1px solid var(--line) !important;
+  border-radius:10px !important;
+  background:var(--surface) !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-icon,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-title,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-meta,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .field-hint,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact small{
+  display:none !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-info{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:block !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-name{
+  display:block !important;
+  width:100% !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:var(--forest) !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+  line-height:38px !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  text-align:left !important;
+  transform:none !important;
+  position:static !important;
+  box-sizing:border-box !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-actions{
+  flex:0 0 auto !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  align-self:center !important;
+  box-sizing:border-box !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  width:38px !important;
+  height:38px !important;
+  min-width:38px !important;
+  max-width:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  flex:0 0 38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  outline:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  line-height:1 !important;
+  position:relative !important;
+  top:auto !important;
+  transform:none !important;
+  box-sizing:border-box !important;
+  -webkit-appearance:none !important;
+  appearance:none !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn{ color:var(--forest) !important; }
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{ color:var(--danger) !important; }
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn::after{
+  content:"" !important;
+  position:absolute !important;
+  right:0 !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:1px !important;
+  height:22px !important;
+  min-height:22px !important;
+  max-height:22px !important;
+  background:var(--line) !important;
+  border-radius:1px !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn svg,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn svg{
+  width:18px !important;
+  height:18px !important;
+  display:block !important;
+  flex:0 0 18px !important;
+  stroke:currentColor !important;
+  margin:0 !important;
+  padding:0 !important;
+  transform:none !important;
+}
+
+/* Ajuste final controlado: altura única de 38px nos campos da Implementación */
+.step[data-step="3"] .treatment-body input[type="text"],
+.step[data-step="3"] .treatment-body input[type="number"],
+.step[data-step="3"] .treatment-body select,
+.step[data-step="3"] .treatment-body .qty-stepper input,
+.step[data-step="3"] .treatment-body .dose-input-wrap input,
+.step[data-step="3"] .treatment-body .calc-output input[readonly],
+.step[data-step="3"] .treatment-body .qty-step-btn,
+.step[data-step="3"] .treatment-body .product-add-btn,
+.step[data-step="3"] .treatment-body .product-picker-cancel,
+.step[data-step="3"] .treatment-body .product-option{
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  box-sizing:border-box !important;
+}
+.step[data-step="3"] .treatment-body input[type="text"],
+.step[data-step="3"] .treatment-body input[type="number"],
+.step[data-step="3"] .treatment-body select,
+.step[data-step="3"] .treatment-body .qty-stepper input,
+.step[data-step="3"] .treatment-body .dose-input-wrap input,
+.step[data-step="3"] .treatment-body .calc-output input[readonly]{
+  display:block !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  line-height:38px !important;
+  vertical-align:middle !important;
+}
+.step[data-step="3"] .treatment-body .qty-stepper{
+  display:grid !important;
+  grid-template-columns:38px minmax(0,1fr) 38px !important;
+  gap:8px !important;
+  align-items:center !important;
+}
+.step[data-step="3"] .treatment-body .qty-step-btn{
+  width:38px !important;
+  min-width:38px !important;
+  max-width:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0 !important;
+  line-height:1 !important;
+}
+.step[data-step="3"] .treatment-body .dose-input-wrap{
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  position:relative !important;
+}
+.step[data-step="3"] .treatment-body .dose-suffix{
+  position:absolute !important;
+  top:0 !important;
+  right:12px !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  line-height:1 !important;
+  transform:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  pointer-events:none !important;
+}
+</style>
+<style>
+/* Visualização ampliada de fotos */
+.photo-thumb{ cursor:pointer; }
+.photo-viewer-open{ overflow:hidden; }
+.photo-viewer-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.92);
+  padding:52px 14px 42px;
+  touch-action:none;
+}
+.photo-viewer-overlay.open{ display:flex; }
+.photo-viewer-stage{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.photo-viewer-stage img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  border-radius:10px;
+  transition:transform .12s ease;
+  transform-origin:center center;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.photo-viewer-close{
+  position:absolute;
+  top:14px;
+  right:14px;
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.16);
+  color:#fff;
+  font-size:30px;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+.photo-viewer-nav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:42px;
+  height:52px;
+  border:0;
+  border-radius:999px;
+  background:rgba(255,255,255,.13);
+  color:#fff;
+  font-size:42px;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+.photo-viewer-prev{ left:8px; }
+.photo-viewer-next{ right:8px; }
+.photo-viewer-counter{
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  transform:translateX(-50%);
+  color:#fff;
+  font-size:13px;
+  font-weight:800;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.14);
+}
+@media(max-width:420px){
+  .photo-viewer-nav{ width:36px; height:48px; font-size:34px; }
+  .photo-viewer-overlay{ padding-left:8px; padding-right:8px; }
+}
+
+/* ajuste UX: etapa Fotos de instalación sem título duplicado e sem card externo */
+.step[data-step="5"] .photo-install-add-btn{
+  margin-top:0;
+}
+.step[data-step="5"] .photo-install-grid{
+  margin-top:14px;
+}
+</style>
+<style>
+/* ajuste: manter apenas um separador entre ações e avaliações registradas */
+#eval-form-card > .product-form-actions{
+  margin-bottom:20px !important;
+  padding-bottom:0 !important;
+  border-bottom:0 !important;
+}
+.eval-history-section{
+  margin-top:24px !important;
+  padding-top:24px !important;
+  border-top:1px solid var(--line) !important;
+}
+#eval-form-card + .products-header-row{
+  margin-top:8px !important;
+}
 </style>
 </head>
 <body>
@@ -3296,12 +4769,15 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
           <svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Agregar nueva evaluación
         </button>
+        <button class="btn btn-secondary btn-add-product" id="btn-eval-consultar" type="button">
+          <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Consultar evaluaciones
+        </button>
         <div class="card eval-admin-form" id="eval-form-card">
           <div class="section-title">
             <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             <span id="eval-form-title">Agregar evaluación</span>
           </div>
-          <div class="section-desc">Configura las evaluaciones intermedias. Instalación del ensayo y Cosecha quedan fijas.</div>
           <div class="field-group"><label class="field-label">Nombre de la evaluación</label><input type="text" id="ev-nombre" placeholder="Ej. 1ª Evaluación"></div>
           <div class="field-group"><label class="field-label">Tipo de ensayo donde se aplica</label>
             <select id="ev-tipo"></select>
@@ -3309,33 +4785,50 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
           </div>
           <div class="field-group"><label class="field-label">Momento</label><input type="text" id="ev-momento" placeholder="Ej. 7-10 DDA"></div>
           <div class="field-group"><label class="field-label">Formulario</label>
-            <div class="admin-config-accordion" id="accordion-question">
+            <div class="eval-secciones-list" id="eval-secciones-list">
+            <div class="admin-config-accordion" id="accordion-question" data-seccion="pregunta">
               <button class="admin-config-toggle" type="button" data-admin-accordion="accordion-question">
                 <svg class="ic" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
                 <span class="admin-config-title">Pregunta</span>
                 <span class="admin-config-badge" id="badge-question" hidden>0</span>
+                <span class="admin-config-drag-handle" title="Arrastrar para ordenar" aria-label="Arrastrar para ordenar">☰</span>
                 <span class="admin-config-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
               </button>
               <div class="admin-config-panel">
                 <div class="field-group"><label class="field-label">Título de la pregunta</label><input type="text" id="ev-field-label" placeholder="Ej. Diferencias de coloración de plantas"></div>
-                <button class="btn btn-secondary" id="btn-eval-question-add" type="button" style="width:100%;">Agregar pergunta</button>
+                <div class="field-group">
+                  <label class="field-label">Tipo de resposta</label>
+                  <select id="ev-field-response-type">
+                    <option value="texto">Texto livre</option>
+                    <option value="sim_nao">Sim / Não</option>
+                    <option value="opcoes">Opções configuradas</option>
+                  </select>
+                  <div class="field-hint">Define como o promotor vai responder no formulário do ensaio.</div>
+                </div>
+                <div class="field-group question-options-wrap" id="ev-field-options-wrap">
+                  <label class="field-label">Opções de resposta</label>
+                  <input type="text" id="ev-field-options" placeholder="Ej. Flor, Vagem, Raiz">
+                  <div class="field-hint">Separe as opções por vírgula.</div>
+                </div>
+                <button class="btn btn-primary" id="btn-eval-question-add" type="button" style="width:100%;">Agregar pergunta</button>
                 <div class="eval-field-group-title">Preguntas registradas</div>
                 <div class="products-list" id="eval-question-list"></div>
               </div>
             </div>
 
-            <div class="admin-config-accordion" id="accordion-table">
+            <div class="admin-config-accordion" id="accordion-table" data-seccion="tabla">
               <button class="admin-config-toggle" type="button" data-admin-accordion="accordion-table">
                 <svg class="ic" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
                 <span class="admin-config-title">Tabela</span>
                 <span class="admin-config-badge" id="badge-table" hidden>0</span>
+                <span class="admin-config-drag-handle" title="Arrastrar para ordenar" aria-label="Arrastrar para ordenar">☰</span>
                 <span class="admin-config-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
               </button>
               <div class="admin-config-panel">
                 <div class="eval-field-group-title" style="margin-top:0;">Tablas registradas</div>
                 <div class="products-list" id="eval-table-list"></div>
 
-                <button class="btn btn-secondary" id="btn-eval-table-new" type="button" style="width:100%;margin-top:12px;">
+                <button class="btn btn-primary" id="btn-eval-table-new" type="button" style="width:100%;margin-top:12px;">
                   <svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   Adicionar nova tabela
                 </button>
@@ -3404,12 +4897,12 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 
             <div class="products-list" id="eval-fields-list" style="display:none;"></div>
             
-          </div>
-          <div class="admin-config-accordion" id="accordion-date">
+          <div class="admin-config-accordion" id="accordion-date" data-seccion="fecha">
             <button class="admin-config-toggle" type="button" data-admin-accordion="accordion-date">
               <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
               <span class="admin-config-title">Fecha</span>
               <span class="admin-config-badge" id="badge-date" hidden>0</span>
+              <span class="admin-config-drag-handle" title="Arrastrar para ordenar" aria-label="Arrastrar para ordenar">☰</span>
               <span class="admin-config-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
             </button>
             <div class="admin-config-panel">
@@ -3420,19 +4913,22 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
             </div>
           </div>
 
-          <div class="admin-config-accordion" id="accordion-photo">
+          <div class="admin-config-accordion" id="accordion-photo" data-seccion="fotos">
             <button class="admin-config-toggle" type="button" data-admin-accordion="accordion-photo">
               <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 5l1.5-2h5L16 5"/><circle cx="12" cy="13" r="3"/></svg>
               <span class="admin-config-title">Fotos</span>
               <span class="admin-config-badge" id="badge-photo" hidden>0</span>
+              <span class="admin-config-drag-handle" title="Arrastrar para ordenar" aria-label="Arrastrar para ordenar">☰</span>
               <span class="admin-config-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
             </button>
             <div class="admin-config-panel">
               <div class="field-group"><label class="field-label">Fotos</label><select id="ev-fotos"><option value="sim">Permitir fotos</option><option value="nao">Sin fotos</option></select></div>
             </div>
           </div>
+            </div>
+          </div>
           <div class="product-form-actions">
-            <button class="btn btn-secondary" id="btn-eval-clear" type="button">Limpiar</button>
+            <button class="btn btn-secondary" id="btn-eval-clear" type="button">Cancelar</button>
             <button class="btn btn-primary" id="btn-eval-save" type="button">Guardar evaluación</button>
           </div>
         </div>
@@ -3440,10 +4936,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
           <div class="eval-history-header">
             <div class="section-title">Evaluaciones registradas</div>
             <div class="products-count" id="eval-count">0 evaluaciones</div>
-          </div>
-          <div class="product-filter-wrap eval-history-filter">
-            <div class="product-filter-chips" id="eval-type-filter"></div>
-            <div class="field-hint" id="eval-filter-hint"></div>
           </div>
           <div class="products-list" id="eval-list"></div>
         </section>
@@ -3521,11 +5013,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 
       <!-- STEP 2: dados do ensaio -->
       <section class="step" data-step="2">
-        <div class="section-title">
-          <svg class="ic" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          Datos del ensayo
-        </div>
-        <div class="section-desc">Información general del cliente y localización.</div>
         <div class="field-group"><label class="field-label">Cliente</label><input type="text" id="f-cliente" autocapitalize="words" autocomplete="off"></div>
         <div class="field-group"><label class="field-label">Localidad</label><input type="text" id="f-localidad" autocapitalize="words" autocomplete="off"></div>
         <div class="row-2">
@@ -3546,19 +5033,13 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 
       <!-- STEP 3: implementação -->
       <section class="step" data-step="3">
-        <div class="section-title">
-          <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          Implementación del ensayo
-        </div>
-        <div class="section-desc">Aplicación Somax y competidor.</div>
-
-        <div class="treatment-card somax-treatment">
-          <div class="treatment-header treatment-header-somax">
-            <span>Somax</span>
-          </div>
+        <div class="treatment-card somax-treatment implementation-panel collapsed" data-implementation-panel="somax">
+          <button type="button" class="treatment-header treatment-header-somax implementation-toggle" data-implementation-toggle="somax" aria-expanded="false">
+            <span>Somax</span><span class="implementation-arrow" aria-hidden="true">⌄</span>
+          </button>
           <div class="treatment-body">
             <div class="product-picker-wrap">
-              <label class="field-label">Producto Somax</label>
+              <label class="field-label">Produto</label>
               <div id="somax-product-selected"></div>
               <button type="button" class="product-add-btn" id="btn-add-somax-product">
                 <svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -3587,7 +5068,7 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 
             <div class="mixture-section">
               <div class="mixture-title-row">
-                <label class="field-label">Mescla Somax</label>
+                <label class="field-label">Mescla</label>
               </div>
               <div id="somax-mescla-selected"></div>
               <button type="button" class="product-add-btn" id="btn-add-somax-mescla">
@@ -3614,13 +5095,13 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
         </div>
 
 
-        <div class="treatment-card competitor-treatment">
-          <div class="treatment-header treatment-header-competidor">
-            <span>Competidor</span>
-          </div>
+        <div class="treatment-card competitor-treatment implementation-panel collapsed" data-implementation-panel="competidor">
+          <button type="button" class="treatment-header treatment-header-competidor implementation-toggle" data-implementation-toggle="competidor" aria-expanded="false">
+            <span>Competidor</span><span class="implementation-arrow" aria-hidden="true">⌄</span>
+          </button>
           <div class="treatment-body">
             <div class="comp-section-head">
-              <label class="field-label">Producto competidor</label>
+              <label class="field-label">Produto</label>
               <button type="button" class="btn-trash comp-trash" id="btn-del-comp-product" aria-label="Excluir" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
             </div>
             <button type="button" class="product-add-btn" id="btn-add-comp-product">
@@ -3648,7 +5129,7 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 
             <div class="mixture-section">
               <div class="mixture-title-row comp-section-head">
-                <label class="field-label">Mescla competidor</label>
+                <label class="field-label">Mescla</label>
                 <button type="button" class="btn-trash comp-trash" id="btn-del-comp-mescla" aria-label="Excluir" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
               </div>
               <button type="button" class="product-add-btn" id="btn-add-comp-mescla">
@@ -3683,14 +5164,7 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 
       <!-- STEP 4: datos agronómicos -->
       <section class="step" data-step="4">
-        <div class="section-title">
-          <svg class="ic" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M4 10c4 0 8 4 8 8"/><path d="M20 10c-4 0-8 4-8 8"/><path d="M6 4c3 0 6 3 6 6"/><path d="M18 4c-3 0-6 3-6 6"/></svg>
-          Datos agronómicos
-        </div>
-        <div class="section-desc">Condiciones del cultivo y datos de la aplicación del ensayo.</div>
-
-        <div class="card">
-          <div class="row-2">
+        <div class="row-2">
             <div class="field-group"><label class="field-label">Variedad / híbrido</label><input type="text" id="f-imp-variedade"></div>
             <div class="field-group"><label class="field-label">Fecha de siembra</label><input type="date" id="f-imp-fechaSiembra"></div>
           </div>
@@ -3702,28 +5176,20 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
             <div class="field-group"><label class="field-label">Fecha de cosecha prevista</label><input type="date" id="f-imp-fechaCosecha"></div>
             <div class="field-group"><label class="field-label">Fecha de aplicación</label><input type="date" id="f-imp-fechaAplicacion"></div>
           </div>
-          <div class="row-2">
-            <div class="field-group"><label class="field-label">Estadio del cultivo</label><button type="button" id="f-imp-estadio-trigger" class="estadio-picker-trigger"><span id="f-imp-estadio-label">Seleccionar estadio</span><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button><div class="estadio-selected-chips" id="f-imp-estadio-selected"></div><div class="field-hint" id="estadio-hint" style="display:none;"></div></div>
-            <div class="field-group"><label class="field-label">Área aplicada (ha)</label><input type="number" id="f-imp-areaAplicada"></div>
-          </div>
+        <div class="row-2">
+          <div class="field-group"><label class="field-label">Estadio del cultivo</label><button type="button" id="f-imp-estadio-trigger" class="estadio-picker-trigger"><span id="f-imp-estadio-label">Seleccionar estadio</span><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button><div class="estadio-selected-chips" id="f-imp-estadio-selected"></div><div class="field-hint" id="estadio-hint" style="display:none;"></div></div>
+          <div class="field-group"><label class="field-label">Área aplicada (ha)</label><input type="number" id="f-imp-areaAplicada"></div>
         </div>
       </section>
 
       <!-- STEP 5: fotos instalação -->
       <section class="step" data-step="5">
-        <div class="section-title">
+        <label class="photo-add-btn photo-install-add-btn">
           <svg class="ic" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          Fotos de la instalación
-        </div>
-        <div class="section-desc">Fotos de la instalación del ensayo, estadio del cultivo y situación actual de la parcela.</div>
-        <div class="card">
-          <label class="photo-add-btn">
-            <svg class="ic" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            Agregar fotos
-            <input type="file" accept="image/*" capture="environment" multiple id="f-fotos-instalacao">
-          </label>
-          <div class="photo-grid" id="grid-fotos-instalacao"></div>
-        </div>
+          Agregar fotos
+          <input type="file" accept="image/*" capture="environment" multiple id="f-fotos-instalacao">
+        </label>
+        <div class="photo-grid photo-install-grid" id="grid-fotos-instalacao"></div>
       </section>
 
       <!-- STEP 6: evaluación configurable -->
@@ -3909,9 +5375,6 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
         <h1 id="detail-title">Ensayo</h1>
         <div class="subtitle" id="detail-sub">&nbsp;</div>
       </div>
-      <button class="icon-btn" id="btn-detail-edit">
-        <svg class="ic" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
-      </button>
     </div>
     <div class="detail-body" id="detail-body"></div>
   </div>
@@ -3926,6 +5389,16 @@ const STORAGE_KEY = 'cc_foliares_ensaios_v1';
 const PRODUCTOS_KEY = 'cc_foliares_productos_v1';
 const EVALUACIONES_KEY = 'cc_foliares_evaluaciones_v1';
 const ESTADIOS_KEY = 'cc_foliares_estadios_v1';
+const RESET_DATA_VERSION = 'zero-total-2026-06-22-v1';
+const RESET_DATA_VERSION_KEY = 'cc_zero_total_version';
+function resetInitialDataOnce(){
+  try{
+    if(localStorage.getItem(RESET_DATA_VERSION_KEY) !== RESET_DATA_VERSION){
+      [STORAGE_KEY, PRODUCTOS_KEY, EVALUACIONES_KEY].forEach(key => localStorage.removeItem(key));
+      localStorage.setItem(RESET_DATA_VERSION_KEY, RESET_DATA_VERSION);
+    }
+  } catch(e){}
+}
 const DEFAULT_PRODUCTOS = [
   {nombre:'Promax Ray Nitro', tipo:'foliares', activos:'', dose:'', unidade:'', envase:''},
   {nombre:'Promax Energic', tipo:'foliares', activos:'', dose:'', unidade:'', envase:''},
@@ -4005,6 +5478,15 @@ const DEFAULT_ESTADIOS = [
 ];
 let estadiosCatalogo = [];
 let editingEstadioIndex = null;
+const EVAL_SECCIONES_ORDEN_DEFAULT = ['fecha','fotos','pregunta','tabla'];
+function normalizeSeccionesOrden(value){
+  const base = Array.isArray(value) ? value : EVAL_SECCIONES_ORDEN_DEFAULT;
+  const valid = EVAL_SECCIONES_ORDEN_DEFAULT;
+  const clean = [];
+  base.forEach(item => { if(valid.includes(item) && !clean.includes(item)) clean.push(item); });
+  valid.forEach(item => { if(!clean.includes(item)) clean.push(item); });
+  return clean.length === valid.length ? clean : valid.slice();
+}
 const DEFAULT_EVALUACIONES = [
   {id:'eval1', nombre:'1ª Evaluación', tipoEnsaio:'foliares', momento:'7-10 DDA', orden:1, fecha:true, fotos:true, campos:[
     {id:'coloracion', tipo:'texto', label:'Diferencias de coloración de plantas'},
@@ -4053,7 +5535,7 @@ function safeFieldId(label){
   return normalizeText(label).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'') || ('campo_'+Date.now());
 }
 function normalizeEvalCampo(c, idx){
-  if(typeof c === 'string') return {id:safeFieldId(c), tipo:'texto', label:c};
+  if(typeof c === 'string') return {id:safeFieldId(c), tipo:'texto', label:c, respostaTipo:'texto', opcoes:[]};
   const tipo = (c.tipo === 'tabela' || c.tipo === 'comparativo') ? 'tabela' : 'texto';
   const label = c.label || c.nome || c.nombre || ('Campo '+(idx+1));
   const id = c.id || safeFieldId(label);
@@ -4073,7 +5555,12 @@ function normalizeEvalCampo(c, idx){
       columnas: columnas.length ? columnas : [{key:'valor', label:'Valor'}]
     };
   }
-  return {id, tipo:'texto', label};
+  const respostaTipoRaw = c.respostaTipo || c.tipoResposta || c.responseType || c.questionType || c.tipo_pergunta || c.tipo;
+  const respostaTipo = ['sim_nao','opcoes'].includes(respostaTipoRaw) ? respostaTipoRaw : 'texto';
+  const opcoesRaw = Array.isArray(c.opcoes) ? c.opcoes : Array.isArray(c.options) ? c.options : String(c.opcoes || c.options || '').split(',');
+  let opcoes = respostaTipo === 'sim_nao' ? ['Sim','Não'] : opcoesRaw.map(o => String(o).trim()).filter(Boolean);
+  if(respostaTipo === 'opcoes' && !opcoes.length) opcoes = ['Opção 1'];
+  return {id, tipo:'texto', label, respostaTipo, opcoes};
 }
 function normalizeEvalFecha(raw, idx){
   if(typeof raw === 'string') raw = {label: raw};
@@ -4257,6 +5744,23 @@ function countFilledRequired(obj, keys){
   const source = obj || {};
   return keys.reduce((acc, key) => acc + (hasTextValue(source[key]) ? 1 : 0), 0);
 }
+function hasEstadioSelecionado(ensaio){
+  const imp = ensaio && ensaio.implementacao ? ensaio.implementacao : {};
+  if(hasTextValue(imp.estadio)) return true;
+  if(Array.isArray(imp.estadios) && imp.estadios.length) return true;
+  if(Array.isArray(imp.estadiosSelecionados) && imp.estadiosSelecionados.length) return true;
+  const chips = document.getElementById('f-imp-estadio-selected');
+  if(chips && chips.children && chips.children.length) return true;
+  const label = document.getElementById('f-imp-estadio-label');
+  return !!(label && label.textContent && !/seleccionar estadio/i.test(label.textContent.trim()));
+}
+function countFilledImplementationRequired(ensaio, imp, keys){
+  const source = imp || {};
+  return keys.reduce((acc, key) => {
+    if(key === 'estadio') return acc + (hasEstadioSelecionado(ensaio) ? 1 : 0);
+    return acc + (hasTextValue(source[key]) ? 1 : 0);
+  }, 0);
+}
 function isTableFilled(tbl, campo){
   return detailTableHasValue(tbl, campo);
 }
@@ -4266,6 +5770,149 @@ function stageStatusFromCounts(filled, total){
   if(filled >= total) return 'complete';
   return 'partial';
 }
+
+function stageProgressFromCounts(filled, total){
+  if(total <= 0) return filled > 0 ? 100 : 0;
+  const pct = Math.round((Math.max(0, Math.min(filled, total)) / total) * 100);
+  return Math.max(0, Math.min(100, pct));
+}
+function instalacionProgress(e){
+  e = ensureEnsaioShape(e);
+  const dadosReq = ['cliente','localidade','gestor','promotor','areaTotal','areaEnsaio','cultivo'];
+  const imp = e.implementacao || {};
+  const somax = imp.somax || {};
+  const comp = imp.competidor || {};
+  const impReq = ['variedade','fechaSiembra','espaciamiento','poblacion','fechaCosecha','fechaAplicacion','estadio','areaAplicada'];
+  let total = dadosReq.length + impReq.length + 6 + 1;
+  let filled = 0;
+  filled += countFilledRequired(e.dados, dadosReq);
+  filled += countFilledImplementationRequired(e, imp, impReq);
+  filled += countFilledRequired(somax, ['produto','ativos','dosis']);
+  filled += countFilledRequired(comp, ['produto','ativos','dosis']);
+  if(e.fotosInstalacao && e.fotosInstalacao.length) filled += 1;
+  return stageProgressFromCounts(filled, total);
+}
+
+
+/* v158 - Mostrar pendências ao tocar no indicador amarelo do progresso */
+function missingTextValue(source, key){
+  return !hasTextValue(source && source[key]);
+}
+function addMissingRequired(items, source, fields, labels, prefix){
+  fields.forEach(key => {
+    if(missingTextValue(source, key)){
+      const label = labels && labels[key] ? labels[key] : key;
+      items.push(prefix ? (prefix + ': ' + label) : label);
+    }
+  });
+}
+function missingItemsInstalacion(e){
+  e = ensureEnsaioShape(e);
+  const items = [];
+  const dados = e.dados || {};
+  const imp = e.implementacao || {};
+  const somax = imp.somax || {};
+  const comp = imp.competidor || {};
+  addMissingRequired(items, dados, ['cliente','localidade','gestor','promotor','areaTotal','areaEnsaio','cultivo'], {
+    cliente:'Cliente', localidade:'Localidad', gestor:'Gestor de venta', promotor:'Promotor de venta', areaTotal:'Área total', areaEnsaio:'Área del ensayo', cultivo:'Cultivo'
+  }, 'Datos del ensayo');
+  addMissingRequired(items, imp, ['variedade','fechaSiembra','espaciamiento','poblacion','fechaCosecha','fechaAplicacion','areaAplicada'], {
+    variedade:'Variedad / híbrido', fechaSiembra:'Fecha de siembra', espaciamiento:'Espaciamiento', poblacion:'Población', fechaCosecha:'Fecha de cosecha prevista', fechaAplicacion:'Fecha de aplicación', areaAplicada:'Área aplicada'
+  }, 'Datos agronómicos');
+  if(!hasEstadioSelecionado(e)) items.push('Datos agronómicos: Estadio del cultivo');
+  addMissingRequired(items, somax, ['produto','ativos','dosis'], {produto:'Producto Somax', ativos:'Activos Somax', dosis:'Dosis Somax'}, 'Implementación');
+  addMissingRequired(items, comp, ['produto','ativos','dosis'], {produto:'Producto competidor', ativos:'Activos competidor', dosis:'Dosis competidor'}, 'Implementación');
+  if(!(e.fotosInstalacao && e.fotosInstalacao.length)) items.push('Fotos de instalación: agregar al menos 1 foto');
+  return items;
+}
+function missingItemsEvaluacion(e, ev){
+  e = ensureEnsaioShape(e);
+  ensureEvaluacionesData(e);
+  const data = e.evaluaciones[ev.id] || {fecha:'', fotos:[], campos:{}, tablas:{}};
+  const items = [];
+  if(ev.fecha && !hasTextValue(data.fecha)) items.push('Fecha de evaluación');
+  if(ev.fotos && !(data.fotos && data.fotos.length)) items.push('Fotos: agregar al menos 1 foto');
+  (ev.campos || []).forEach((rawCampo, idx) => {
+    const campo = normalizeEvalCampo(rawCampo, idx);
+    if(!campo.label) return;
+    if(campo.tipo === 'tabela'){
+      if(!isTableFilled(data.tablas && data.tablas[campo.id], campo)) items.push('Tabla: ' + campo.label);
+    }else{
+      const resposta = (data.campos && (data.campos[campo.id] || data.campos[campo.label])) || '';
+      if(!hasTextValue(resposta)) items.push('Pregunta: ' + campo.label);
+    }
+  });
+  return items;
+}
+function missingItemsColheita(e){
+  e = ensureEnsaioShape(e);
+  const items = [];
+  const labels = {area:'Área cosechada', kg:'Kg cosechados', humedad:'Humedad', pms:'PMS', resultado:'Resultado'};
+  addMissingRequired(items, e.colheita && e.colheita.somax, ['area','kg','humedad','pms','resultado'], labels, 'Cosecha Somax');
+  addMissingRequired(items, e.colheita && e.colheita.competidor, ['area','kg','humedad','pms','resultado'], labels, 'Cosecha competidor');
+  return items;
+}
+function missingItemsForEtapa(e, etapaKey){
+  const tipo = (e && e.tipo && TIPOS[e.tipo]) ? e.tipo : TIPO_DEFAULT;
+  if(etapaKey === 'instalacion') return missingItemsInstalacion(e);
+  if(etapaKey === 'colheita') return missingItemsColheita(e);
+  const ev = evaluacionesFor(tipo).find(x => evalKey(x) === etapaKey);
+  if(ev) return missingItemsEvaluacion(e, ev);
+  return [];
+}
+function showMissingEtapaFromDetail(etapaKey){
+  if(!current) return;
+  const items = missingItemsForEtapa(current, etapaKey);
+  if(!items.length){
+    alert('Etapa completa. No falta completar nada.');
+    return;
+  }
+  alert('Falta completar:\n\n• ' + items.join('\n• '));
+}
+function handleEtapaProgressCardClick(ev, etapaKey){
+  const row = ev && ev.currentTarget ? ev.currentTarget : null;
+  const pct = row ? Number(row.getAttribute('data-progress') || '0') : 0;
+  if(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+  }
+  if(ev && ev.target && ev.target.closest && ev.target.closest('.etapa-check') && pct < 100){
+    showMissingEtapaFromDetail(etapaKey);
+    return false;
+  }
+  openEtapaFromDetail(etapaKey);
+  return false;
+}
+
+function dynamicEvalProgress(e, ev){
+  ensureEvaluacionesData(e);
+  const data = e.evaluaciones[ev.id] || {fecha:'', fotos:[], campos:{}, tablas:{}};
+  let total = 0;
+  let filled = 0;
+  if(ev.fecha){ total += 1; if(hasTextValue(data.fecha)) filled += 1; }
+  if(ev.fotos){ total += 1; if(data.fotos && data.fotos.length) filled += 1; }
+  (ev.campos || []).forEach((rawCampo, idx) => {
+    const campo = normalizeEvalCampo(rawCampo, idx);
+    if(!campo.label) return;
+    total += 1;
+    if(campo.tipo === 'tabela'){
+      if(isTableFilled(data.tablas && data.tablas[campo.id], campo)) filled += 1;
+    } else {
+      const resposta = (data.campos && (data.campos[campo.id] || data.campos[campo.label])) || '';
+      if(hasTextValue(resposta)) filled += 1;
+    }
+  });
+  return stageProgressFromCounts(filled, total);
+}
+function colheitaProgress(e){
+  e = ensureEnsaioShape(e);
+  const req = ['area','kg','humedad','pms','resultado'];
+  const total = req.length * 2;
+  const filled = countFilledRequired(e.colheita && e.colheita.somax, req) + countFilledRequired(e.colheita && e.colheita.competidor, req);
+  return stageProgressFromCounts(filled, total);
+}
+
 function instalacionStatus(e){
   e = ensureEnsaioShape(e);
   const dadosReq = ['cliente','localidade','gestor','promotor','areaTotal','areaEnsaio','cultivo'];
@@ -4276,7 +5923,7 @@ function instalacionStatus(e){
   let total = dadosReq.length + impReq.length + 6 + 1;
   let filled = 0;
   filled += countFilledRequired(e.dados, dadosReq);
-  filled += countFilledRequired(imp, impReq);
+  filled += countFilledImplementationRequired(e, imp, impReq);
   filled += countFilledRequired(somax, ['produto','ativos','dosis']);
   filled += countFilledRequired(comp, ['produto','ativos','dosis']);
   if(e.fotosInstalacao && e.fotosInstalacao.length) filled += 1;
@@ -4302,9 +5949,6 @@ function dynamicEvalStatus(e, ev){
   });
   return stageStatusFromCounts(filled, total);
 }
-function dynamicEvalEstaCompleta(e, ev){
-  return dynamicEvalStatus(e, ev) === 'complete';
-}
 function colheitaStatus(e){
   e = ensureEnsaioShape(e);
   const req = ['area','kg','humedad','pms','resultado'];
@@ -4313,15 +5957,15 @@ function colheitaStatus(e){
   return stageStatusFromCounts(filled, total);
 }
 function etapasFor(tipo){
-  const evals = (evaluacionesConfig.length ? evaluacionesConfig : DEFAULT_EVALUACIONES).slice()
+  const evals = evaluacionesConfig.slice()
     .filter(ev => (ev.tipoEnsaio || TIPO_DEFAULT) === tipo)
     .sort((a,b)=>(Number(a.orden)||0)-(Number(b.orden)||0));
   return [
     { key:'instalacion', label:'Instalación del ensayo', steps:[2,3,4,5],
-      status: e => instalacionStatus(e), estaCompleta: e => instalacionStatus(e) === 'complete' },
-    ...evals.map(ev => ({ key:evalKey(ev), label:evalTitle(ev), steps:[6], status:e => dynamicEvalStatus(e, ev), estaCompleta:e => dynamicEvalStatus(e, ev) === 'complete' })),
+      status: e => instalacionStatus(e), progress: e => instalacionProgress(e), estaCompleta: e => instalacionStatus(e) === 'complete' },
+    ...evals.map(ev => ({ key:evalKey(ev), label:evalTitle(ev), steps:[6], status:e => dynamicEvalStatus(e, ev), progress:e => dynamicEvalProgress(e, ev), estaCompleta:e => dynamicEvalStatus(e, ev) === 'complete' })),
     { key:'colheita', label:'Cosecha y Resultado', steps:[9,10],
-      status: e => colheitaStatus(e), estaCompleta: e => colheitaStatus(e) === 'complete' }
+      status: e => colheitaStatus(e), progress: e => colheitaProgress(e), estaCompleta: e => colheitaStatus(e) === 'complete' }
   ];
 }
 function etapaOf(key, tipo){
@@ -4344,15 +5988,6 @@ function normalizeUnidad(valor){
 }
 function normalizeNumericText(valor){
   return String(valor || '').replace(',', '.').replace(/[^0-9.]/g, '');
-}
-function formatDecimal3Storage(valor){
-  const raw = String(valor || '').trim();
-  if(!raw) return '';
-  const normalized = raw.replace(',', '.').replace(/[^0-9.]/g, '');
-  if(!normalized) return '';
-  const n = Number(normalized);
-  if(!Number.isFinite(n)) return '';
-  return n.toFixed(3);
 }
 function displayNumber(valor){
   const n = parsePtNumber(valor);
@@ -4408,10 +6043,6 @@ function parsePtNumber(v){
   if(!raw) return 0;
   const n = Number(raw.replace(/\./g, '').replace(',', '.').replace(/[^0-9.\-]/g, ''));
   return Number.isFinite(n) ? n : 0;
-}
-function formatPtNumber(n, decimals=3){
-  if(!Number.isFinite(n) || n === 0) return '';
-  return n.toLocaleString('pt-BR', {minimumFractionDigits:decimals, maximumFractionDigits:decimals});
 }
 function formatPtNumberSmart(n, maxDecimals=3){
   if(!Number.isFinite(n) || n === 0) return '';
@@ -4526,13 +6157,6 @@ function stepQuantity(id, dir){
   if(next < envase) next = envase;
   next = nearestEnvaseMultiple(next, envase) || envase;
   setQuantityValue(id, next, true);
-}
-function ensureQuantityMinimum(id){
-  const cfg = quantityConfigById(id);
-  const el = document.getElementById(id);
-  if(!cfg || !el) return;
-  const envase = getSelectedEnvase(cfg.kind);
-  if(envase && !parsePtNumber(el.value)) setQuantityValue(id, envase, false);
 }
 function bindQuantityField(id){
   const el = document.getElementById(id);
@@ -4655,7 +6279,8 @@ function normalizeEvaluacion(ev, idx){
     fecha: ev.fecha !== false && ev.fecha !== 'nao',
     fechas: (ev.fecha !== false && ev.fecha !== 'nao') ? getEvalFechas(ev) : [],
     fotos: ev.fotos !== false && ev.fotos !== 'nao',
-    campos: rawCampos.map(normalizeEvalCampo).filter(c => c.label)
+    campos: rawCampos.map(normalizeEvalCampo).filter(c => c.label),
+    seccionesOrden: normalizeSeccionesOrden(ev.seccionesOrden || ev.secciones_orden)
   };
 }
 function ensurePreCosechaTableConfig(){
@@ -4677,7 +6302,8 @@ function ensurePreCosechaTableConfig(){
         orden: Number(ev.orden || defaultEval3.orden || 3),
         fecha: ev.fecha !== false,
         fotos: ev.fotos === true,
-        campos: defaultEval3.campos
+        campos: defaultEval3.campos,
+        seccionesOrden: normalizeSeccionesOrden(ev.seccionesOrden || defaultEval3.seccionesOrden)
       };
       persistEvaluaciones();
     }
@@ -4690,13 +6316,11 @@ function ensurePreCosechaTableConfig(){
 function loadEvaluaciones(){
   try{
     const raw = localStorage.getItem(EVALUACIONES_KEY);
-    evaluacionesConfig = raw ? JSON.parse(raw).map(normalizeEvaluacion).filter(ev => ev.nombre) : DEFAULT_EVALUACIONES.map(normalizeEvaluacion);
-  } catch(e){ evaluacionesConfig = DEFAULT_EVALUACIONES.map(normalizeEvaluacion); }
-  if(!evaluacionesConfig.length) evaluacionesConfig = DEFAULT_EVALUACIONES.map(normalizeEvaluacion);
+    evaluacionesConfig = raw ? JSON.parse(raw).map(normalizeEvaluacion).filter(ev => ev.nombre) : [];
+  } catch(e){ evaluacionesConfig = []; }
   // corrige ordens duplicadas/com buracos que possam ter ficado de versões anteriores
   evaluacionesConfig.sort((a,b)=>(Number(a.orden)||0)-(Number(b.orden)||0));
   evaluacionesConfig.forEach((ev,i) => { ev.orden = i + 1; });
-  ensurePreCosechaTableConfig();
   persistEvaluaciones();
 }
 function persistEvaluaciones(){
@@ -4706,9 +6330,8 @@ function persistEvaluaciones(){
 function loadProdutos(){
   try{
     const raw = localStorage.getItem(PRODUCTOS_KEY);
-    produtosCatalogo = raw ? JSON.parse(raw).map(normalizeProduct).filter(p => p.nombre) : DEFAULT_PRODUCTOS.slice();
-  } catch(e){ produtosCatalogo = DEFAULT_PRODUCTOS.slice(); }
-  if(!produtosCatalogo.length) produtosCatalogo = DEFAULT_PRODUCTOS.slice();
+    produtosCatalogo = raw ? JSON.parse(raw).map(normalizeProduct).filter(p => p.nombre) : [];
+  } catch(e){ produtosCatalogo = []; }
 }
 function persistProdutos(){
   localStorage.setItem(PRODUCTOS_KEY, JSON.stringify(produtosCatalogo));
@@ -4746,9 +6369,6 @@ function parseEstadioValues(valor){
     .map(v => v.trim())
     .filter(Boolean);
 }
-function getSelectedEstadios(){
-  return current && current.implementacao ? String(current.implementacao.estadio || '').trim() : '';
-}
 function applySelectedEstadios(valor){
   if(!current || !current.implementacao) return;
   const cultivo = current.dados?.cultivo || 'Soja';
@@ -4770,13 +6390,16 @@ function renderEstadioPickerSummary(){
   const chips = document.getElementById('f-imp-estadio-selected');
   if(!label || !chips || !current) return;
   const valores = parseEstadioValues(current.implementacao?.estadio || '');
+  chips.innerHTML = '';
   if(!valores.length){
     label.textContent = 'Seleccionar estadio';
-    chips.innerHTML = '';
     return;
   }
-  label.textContent = valores.length === 1 ? valores[0] : `${valores.length} estadios seleccionados`;
-  chips.innerHTML = valores.map(v => `<span class="estadio-selected-chip">${escapeHtml(v)}</span>`).join('');
+  if(valores.length <= 3){
+    label.textContent = valores.join(' · ');
+  }else{
+    label.textContent = `${valores.slice(0,2).join(' · ')} +${valores.length - 2}`;
+  }
 }
 function populateEstadioSelect(keepCurrent){
   if(!current) return;
@@ -4978,6 +6601,7 @@ function productMetaText(prod){
   return [prod.activos, prod.dose ? 'Dose: '+formatDoseProduto(prod)+' '+normalizeUnidad(prod.unidade || 'L')+'/ha' : '', prod.envase ? 'Envase: '+displayNumber(prod.envase)+' '+normalizeUnidad(prod.unidade || 'L') : ''].filter(Boolean).join(' · ');
 }
 function loadEnsaios(){
+  resetInitialDataOnce();
   loadProdutos();
   loadEvaluaciones();
   loadEstadios();
@@ -5002,8 +6626,13 @@ function saveCurrent(){
     if(prodCadastro){
       current.produtos = [prodCadastro.nombre];
       current.implementacao.somax.produto = prodCadastro.nombre;
-      current.implementacao.somax.ativos = prodCadastro.activos || '';
-      current.implementacao.somax.dosis = formatDoseProduto(prodCadastro);
+      current.implementacao.somax.ativos = current.implementacao.somax.ativos || prodCadastro.activos || '';
+      // Correção: não sobrescrever a dose digitada manualmente ao salvar a etapa.
+      // Antes, toda chamada de saveCurrent() restaurava a dose padrão do cadastro do produto,
+      // fazendo a dose Somax sumir/voltar ao padrão ao reabrir o ensaio.
+      if(!String(current.implementacao.somax.dosis || '').trim()){
+        current.implementacao.somax.dosis = formatDoseProduto(prodCadastro);
+      }
     } else {
       current.implementacao.somax.produto = current.produtos[0];
     }
@@ -5148,21 +6777,10 @@ function parseLocaleNumber(valor){
 function isHarvestIntegerField(id){
   return id.includes('-kg') || id.includes('-resultado') || id.includes('-pms');
 }
-function onlyDigits(valor){
-  return String(valor || '').replace(/\D/g,'');
-}
 function formatIntegerThousands(valor){
   const digits = onlyDigits(valor);
   if(!digits) return '';
   return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
-function normalizeHarvestDecimal(valor){
-  let txt = String(valor || '').replace(/[^0-9,\.]/g,'');
-  if(!txt) return '';
-  txt = txt.replace(/\./g, ',');
-  const parts = txt.split(',');
-  if(parts.length > 2) txt = parts.shift() + ',' + parts.join('');
-  return txt;
 }
 function formatLocaleNumber(valor, decimals){
   const n = parseLocaleNumber(valor);
@@ -5352,17 +6970,129 @@ function renderPhotoGrid(gridId, photosArray){
   const el = document.getElementById(gridId);
   if(!el) return;
   el.innerHTML = photosArray.map((p, i) => `
-    <div class="photo-thumb">
+    <div class="photo-thumb" data-photo-idx="${i}" role="button" aria-label="Ver foto ampliada">
       <img src="${p.data}" alt="">
-      <button type="button" class="photo-remove" data-grid="${gridId}" data-idx="${i}">×</button>
+      <button type="button" class="photo-remove" data-grid="${gridId}" data-idx="${i}" aria-label="Eliminar foto">×</button>
     </div>`).join('');
+  el.querySelectorAll('.photo-thumb').forEach(thumb => {
+    thumb.addEventListener('click', (ev) => {
+      if(ev.target.closest('.photo-remove')) return;
+      openPhotoViewerFromArray(photosArray, parseInt(thumb.dataset.photoIdx || '0', 10));
+    });
+  });
   el.querySelectorAll('.photo-remove').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
       photosArray.splice(parseInt(btn.dataset.idx), 1);
       renderPhotoGrid(gridId, photosArray);
       saveCurrent();
     });
   });
+}
+
+let photoViewerState = { photos: [], index: 0, scale: 1, startX: null, startDistance: null };
+
+function ensurePhotoViewer(){
+  let overlay = document.getElementById('photo-viewer-overlay');
+  if(overlay) return overlay;
+  overlay = document.createElement('div');
+  overlay.id = 'photo-viewer-overlay';
+  overlay.className = 'photo-viewer-overlay';
+  overlay.innerHTML = `
+    <button type="button" class="photo-viewer-close" aria-label="Cerrar visualización">×</button>
+    <button type="button" class="photo-viewer-nav photo-viewer-prev" aria-label="Foto anterior">‹</button>
+    <div class="photo-viewer-stage">
+      <img id="photo-viewer-img" alt="Foto ampliada">
+    </div>
+    <button type="button" class="photo-viewer-nav photo-viewer-next" aria-label="Foto siguiente">›</button>
+    <div class="photo-viewer-counter" id="photo-viewer-counter"></div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.querySelector('.photo-viewer-close').addEventListener('click', closePhotoViewer);
+  overlay.addEventListener('click', (ev) => { if(ev.target === overlay) closePhotoViewer(); });
+  overlay.querySelector('.photo-viewer-prev').addEventListener('click', (ev) => { ev.stopPropagation(); movePhotoViewer(-1); });
+  overlay.querySelector('.photo-viewer-next').addEventListener('click', (ev) => { ev.stopPropagation(); movePhotoViewer(1); });
+
+  const stage = overlay.querySelector('.photo-viewer-stage');
+  stage.addEventListener('click', ev => ev.stopPropagation());
+  stage.addEventListener('dblclick', () => { photoViewerState.scale = photoViewerState.scale > 1 ? 1 : 2; updatePhotoViewerImage(); });
+  stage.addEventListener('touchstart', handlePhotoViewerTouchStart, {passive:true});
+  stage.addEventListener('touchmove', handlePhotoViewerTouchMove, {passive:false});
+  stage.addEventListener('touchend', handlePhotoViewerTouchEnd, {passive:true});
+  return overlay;
+}
+
+function openPhotoViewerFromArray(photosArray, index){
+  const photos = Array.isArray(photosArray) ? photosArray.filter(p => p && p.data) : [];
+  if(!photos.length) return;
+  photoViewerState = { photos, index: Math.max(0, Math.min(index || 0, photos.length - 1)), scale: 1, startX: null, startDistance: null };
+  const overlay = ensurePhotoViewer();
+  overlay.classList.add('open');
+  document.body.classList.add('photo-viewer-open');
+  updatePhotoViewerImage();
+}
+
+function closePhotoViewer(){
+  const overlay = document.getElementById('photo-viewer-overlay');
+  if(overlay) overlay.classList.remove('open');
+  document.body.classList.remove('photo-viewer-open');
+}
+
+function movePhotoViewer(delta){
+  const total = photoViewerState.photos.length;
+  if(total <= 1) return;
+  photoViewerState.index = (photoViewerState.index + delta + total) % total;
+  photoViewerState.scale = 1;
+  updatePhotoViewerImage();
+}
+
+function updatePhotoViewerImage(){
+  const overlay = ensurePhotoViewer();
+  const img = overlay.querySelector('#photo-viewer-img');
+  const counter = overlay.querySelector('#photo-viewer-counter');
+  const prev = overlay.querySelector('.photo-viewer-prev');
+  const next = overlay.querySelector('.photo-viewer-next');
+  const currentPhoto = photoViewerState.photos[photoViewerState.index];
+  img.src = currentPhoto ? currentPhoto.data : '';
+  img.style.transform = `scale(${photoViewerState.scale})`;
+  counter.textContent = photoViewerState.photos.length > 1 ? `${photoViewerState.index + 1} / ${photoViewerState.photos.length}` : '';
+  prev.style.display = photoViewerState.photos.length > 1 ? 'flex' : 'none';
+  next.style.display = photoViewerState.photos.length > 1 ? 'flex' : 'none';
+}
+
+function handlePhotoViewerTouchStart(ev){
+  if(ev.touches.length === 1){
+    photoViewerState.startX = ev.touches[0].clientX;
+  }else if(ev.touches.length === 2){
+    photoViewerState.startDistance = touchDistance(ev.touches[0], ev.touches[1]);
+  }
+}
+
+function handlePhotoViewerTouchMove(ev){
+  if(ev.touches.length === 2 && photoViewerState.startDistance){
+    ev.preventDefault();
+    const nextDistance = touchDistance(ev.touches[0], ev.touches[1]);
+    const nextScale = Math.max(1, Math.min(3, photoViewerState.scale * (nextDistance / photoViewerState.startDistance)));
+    photoViewerState.scale = nextScale;
+    photoViewerState.startDistance = nextDistance;
+    updatePhotoViewerImage();
+  }
+}
+
+function handlePhotoViewerTouchEnd(ev){
+  if(ev.changedTouches.length && photoViewerState.startX !== null && photoViewerState.scale === 1){
+    const diff = ev.changedTouches[0].clientX - photoViewerState.startX;
+    if(Math.abs(diff) > 54) movePhotoViewer(diff > 0 ? -1 : 1);
+  }
+  photoViewerState.startX = null;
+  photoViewerState.startDistance = null;
+}
+
+function touchDistance(a, b){
+  const dx = a.clientX - b.clientX;
+  const dy = a.clientY - b.clientY;
+  return Math.sqrt(dx * dx + dy * dy);
 }
 
 /* =========================================================
@@ -5647,15 +7377,12 @@ function renderSomaxProductSelector(openPicker = false){
 
   if(selected){
     selectedWrap.innerHTML = `
-      <div class="product-selected-card">
-        <span class="product-selected-icon"><svg class="ic" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <div class="product-selected-card product-selected-card-compact">
         <span class="product-selected-info">
-          <span class="product-selected-title">Producto seleccionado</span>
           <span class="product-selected-name">${escapeHtml(current.produtos[0] || selected)}</span>
-          ${productByName(current.produtos[0] || selected) ? `<span class="product-selected-meta">${escapeHtml([productByName(current.produtos[0] || selected).activos, productByName(current.produtos[0] || selected).envase ? 'Envase: '+displayNumber(productByName(current.produtos[0] || selected).envase)+' '+normalizeUnidad(productByName(current.produtos[0] || selected).unidade || 'L') : ''].filter(Boolean).join(' · '))}</span>` : ''}
         </span>
         <span class="product-selected-actions">
-          <button type="button" class="product-change-btn" id="btn-change-somax-product">Cambiar</button>
+          <button type="button" class="product-change-btn product-icon-btn" id="btn-change-somax-product" aria-label="Trocar" title="Trocar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
           <button type="button" class="product-delete-btn btn-trash-sq" id="btn-delete-somax-product" aria-label="Excluir" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
         </span>
       </div>`;
@@ -5775,15 +7502,12 @@ function renderSomaxMesclaSelector(openPicker = false){
   if(selected){
     const meta = [current.implementacao.somax.mescla.ativos, selectedProduct && selectedProduct.envase ? 'Envase: '+displayNumber(selectedProduct.envase)+' '+normalizeUnidad(selectedProduct.unidade || 'L') : ''].filter(Boolean).join(' · ') || productMetaText(selectedProduct);
     selectedWrap.innerHTML = `
-      <div class="product-selected-card">
-        <span class="product-selected-icon"><svg class="ic" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <div class="product-selected-card product-selected-card-compact">
         <span class="product-selected-info">
-          <span class="product-selected-title">Mescla seleccionada</span>
           <span class="product-selected-name">${escapeHtml(selected)}</span>
-          ${meta ? `<span class="product-selected-meta">${escapeHtml(meta)}</span>` : ''}
         </span>
         <span class="product-selected-actions">
-          <button type="button" class="product-change-btn" id="btn-change-somax-mescla">Cambiar</button>
+          <button type="button" class="product-change-btn product-icon-btn" id="btn-change-somax-mescla" aria-label="Trocar" title="Trocar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
           <button type="button" class="product-delete-btn btn-trash-sq" id="btn-delete-somax-mescla" aria-label="Excluir" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
         </span>
       </div>`;
@@ -6127,6 +7851,7 @@ function renderResultStep(){
 let editingProductIndex = null;
 let editingEvalCamposDraft = [];
 let editingEvalFechasDraft = [];
+let editingSeccionesOrdenDraft = EVAL_SECCIONES_ORDEN_DEFAULT.slice();
 let editingEvalFieldIndex = null;
 let editingFechaIdx = null;
 let productFormOpen = false;
@@ -6134,6 +7859,55 @@ function moveArrayItem(arr, from, to){
   from=Number(from); to=Number(to);
   if(!Array.isArray(arr)||from<0||to<0||from>=arr.length||to>=arr.length||from===to) return arr;
   const item=arr.splice(from,1)[0]; arr.splice(to,0,item); return arr;
+}
+function getSeccionesOrdenFromDom(){
+  const list = document.getElementById('eval-secciones-list');
+  const nodes = list ? Array.from(list.querySelectorAll('[data-seccion]')) : [];
+  const orden = nodes.map(el => el.dataset.seccion).filter(Boolean);
+  return normalizeSeccionesOrden(orden.length ? orden : editingSeccionesOrdenDraft);
+}
+function applySeccionesOrdenToForm(orden){
+  editingSeccionesOrdenDraft = normalizeSeccionesOrden(orden);
+  const list = document.getElementById('eval-secciones-list');
+  if(!list) return;
+  editingSeccionesOrdenDraft.forEach(key => {
+    const card = list.querySelector(`[data-seccion="${key}"]`);
+    if(card) list.appendChild(card);
+  });
+}
+function setupSeccionesDnD(){
+  const list = document.getElementById('eval-secciones-list');
+  if(!list) return;
+  let draggedKey = null;
+  list.querySelectorAll('[data-seccion]').forEach(card => {
+    card.setAttribute('draggable','true');
+    const handle = card.querySelector('.admin-config-drag-handle');
+    if(handle){ handle.addEventListener('click', e => e.stopPropagation()); }
+    card.addEventListener('dragstart', e => {
+      draggedKey = card.dataset.seccion;
+      card.classList.add('dragging');
+      if(e.dataTransfer){ e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain', draggedKey); }
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      list.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+      draggedKey = null;
+      editingSeccionesOrdenDraft = getSeccionesOrdenFromDom();
+    });
+    card.addEventListener('dragover', e => { e.preventDefault(); if(card.dataset.seccion !== draggedKey) card.classList.add('drag-over'); });
+    card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+    card.addEventListener('drop', e => {
+      e.preventDefault(); card.classList.remove('drag-over');
+      const from = draggedKey || (e.dataTransfer && e.dataTransfer.getData('text/plain'));
+      const dragged = from ? list.querySelector(`[data-seccion="${from}"]`) : null;
+      if(!dragged || dragged === card) return;
+      const nodes = Array.from(list.querySelectorAll('[data-seccion]'));
+      const fromIdx = nodes.indexOf(dragged);
+      const toIdx = nodes.indexOf(card);
+      if(fromIdx < toIdx) list.insertBefore(dragged, card.nextSibling); else list.insertBefore(dragged, card);
+      editingSeccionesOrdenDraft = getSeccionesOrdenFromDom();
+    });
+  });
 }
 function updateProductDoseSuffix(){
   const unidadeEl = document.getElementById('p-unidade');
@@ -6180,7 +7954,7 @@ function renderEvalFieldsDraft(){
   const makeCard = (campoRaw, i) => {
     const campo = normalizeEvalCampo(campoRaw, i);
     const isTable = campo.tipo === 'tabela';
-    const meta = isTable ? `<div class="eval-table-meta-grid"><span><b>Aplicação:</b> ${(campo.scope || 'comparativo') === 'geral' ? 'Tabela única' : 'Tabela com comparativo'}</span><span><b>Abas:</b> ${escapeHtml(campo.abaLabel || 'Ponto')} (${campo.pontos || 3})</span><span><b>Linhas:</b> ${escapeHtml(campo.linhaLabel || 'Planta')} (${campo.muestras || 5})</span><span><b>Colunas:</b> ${(campo.columnas || []).length} colunas</span></div>` : 'Texto';
+    const meta = isTable ? `<div class="eval-table-meta-grid"><span><b>Aplicação:</b> ${(campo.scope || 'comparativo') === 'geral' ? 'Tabela única' : 'Tabela com comparativo'}</span><span><b>Abas:</b> ${escapeHtml(campo.abaLabel || 'Ponto')} (${campo.pontos || 3})</span><span><b>Linhas:</b> ${escapeHtml(campo.linhaLabel || 'Planta')} (${campo.muestras || 5})</span><span><b>Colunas:</b> ${(campo.columnas || []).length} colunas</span></div>` : (campo.respostaTipo === 'sim_nao' ? 'Resposta: Sim / Não' : campo.respostaTipo === 'opcoes' ? `Resposta: Opções (${(campo.opcoes||[]).join(', ')})` : 'Resposta: Texto livre');
     return `<div class="eval-field-admin-card ${isTable ? 'table-card' : 'question-card'}" draggable="true" data-draft-field-card="${i}" data-draft-field-type="${isTable ? 'tabela' : 'texto'}">
       <div class="eval-field-drag-handle" title="Arrastrar para ordenar" aria-label="Arrastrar para ordenar">☰</div>
       <div class="eval-field-card-main"><div class="eval-field-admin-title">${escapeHtml(campo.label)}</div><div class="eval-field-admin-meta">${meta}</div></div>
@@ -6215,7 +7989,7 @@ function renderEvalFieldsDraft(){
   document.querySelectorAll('[data-edit-eval-field]').forEach(btn => btn.addEventListener('click',()=>{
     const idx = Number(btn.dataset.editEvalField); const campo = normalizeEvalCampo(editingEvalCamposDraft[idx], idx); editingEvalFieldIndex = idx;
     if(campo.tipo === 'tabela'){ setVal('ev-table-label', campo.label || ''); setTableScope(campo.scope || 'comparativo'); setVal('ev-table-aba-label', campo.abaLabel || 'Ponto'); setVal('ev-table-linha-label', campo.linhaLabel || 'Planta'); setVal('ev-table-pontos', String(campo.pontos || 3)); setVal('ev-table-muestras', String(campo.muestras || 5)); setVal('ev-table-cols', (campo.columnas || []).map(col => col.label).join(', ')); updateTablePreviewV141(); document.getElementById('accordion-table')?.classList.add('open'); setEvalTableBuilderOpen(true); }
-    else { setVal('ev-field-label', campo.label || ''); document.getElementById('accordion-question')?.classList.add('open'); }
+    else { setVal('ev-field-label', campo.label || ''); setVal('ev-field-response-type', campo.respostaTipo || 'texto'); setVal('ev-field-options', (campo.opcoes || []).join(', ')); updateQuestionResponseTypeUI(); document.getElementById('accordion-question')?.classList.add('open'); }
   }));
   document.querySelectorAll('[data-remove-eval-field]').forEach(btn => btn.addEventListener('click',()=>{ const idx=Number(btn.dataset.removeEvalField); editingEvalCamposDraft.splice(idx,1); if(editingEvalFieldIndex===idx) editingEvalFieldIndex=null; else if(editingEvalFieldIndex!==null && editingEvalFieldIndex>idx) editingEvalFieldIndex--; renderEvalFieldsDraft(); syncEditingEvalDraftToConfig(); }));
   updateAccordionBadges();
@@ -6315,16 +8089,20 @@ function setEvalFormOpen(open){
 }
 function clearEvalForm(){
   editingEvalId = null;
-  editingFechaIdx = null; editingEvalCamposDraft = []; editingEvalFechasDraft = [normalizeEvalFecha({id:'fecha_evaluacion', label:'Fecha de evaluación'},0)]; clearEvalFieldForm(); renderEvalFieldsDraft(); renderEvalFechasDraft();
+  editingFechaIdx = null; editingEvalCamposDraft = []; editingEvalFechasDraft = [normalizeEvalFecha({id:'fecha_evaluacion', label:'Fecha de evaluación'},0)]; editingSeccionesOrdenDraft = EVAL_SECCIONES_ORDEN_DEFAULT.slice(); clearEvalFieldForm(); renderEvalFieldsDraft(); renderEvalFechasDraft(); applySeccionesOrdenToForm(editingSeccionesOrdenDraft); setupSeccionesDnD();
   populateEvalTipoSelect();
   setVal('ev-nombre',''); setVal('ev-tipo',TIPO_DEFAULT); setVal('ev-momento',''); setVal('ev-fecha','sim'); setVal('ev-fotos','sim');
   const title = document.getElementById('eval-form-title'); if(title) title.textContent = 'Agregar evaluación';
   const btn = document.getElementById('btn-eval-save'); if(btn) btn.textContent = 'Guardar evaluación';
   setEvalFormOpen(false);
 }
+function cancelEvalForm(){
+  if(!confirm('¿Cancelar esta edición? Los cambios no guardados se perderán.')) return;
+  clearEvalForm();
+}
 function startNewEval(){
   editingEvalId = null;
-  editingFechaIdx = null; editingEvalCamposDraft = []; editingEvalFechasDraft = [normalizeEvalFecha({id:'fecha_evaluacion', label:'Fecha de evaluación'},0)]; clearEvalFieldForm(); renderEvalFieldsDraft(); renderEvalFechasDraft();
+  editingFechaIdx = null; editingEvalCamposDraft = []; editingEvalFechasDraft = [normalizeEvalFecha({id:'fecha_evaluacion', label:'Fecha de evaluación'},0)]; editingSeccionesOrdenDraft = EVAL_SECCIONES_ORDEN_DEFAULT.slice(); clearEvalFieldForm(); renderEvalFieldsDraft(); renderEvalFechasDraft(); applySeccionesOrdenToForm(editingSeccionesOrdenDraft); setupSeccionesDnD();
   populateEvalTipoSelect();
   setVal('ev-nombre',''); setVal('ev-tipo',TIPO_DEFAULT); setVal('ev-momento',''); setVal('ev-fecha','sim'); setVal('ev-fotos','sim');
   const title = document.getElementById('eval-form-title'); if(title) title.textContent = 'Agregar evaluación';
@@ -6338,6 +8116,7 @@ function fillEvalForm(id){
   editingFechaIdx = null;
   editingEvalCamposDraft = (ev.campos || []).map((c,i)=>normalizeEvalCampo(c,i));
   editingEvalFechasDraft = getEvalFechas(ev);
+  editingSeccionesOrdenDraft = normalizeSeccionesOrden(ev.seccionesOrden);
   populateEvalTipoSelect();
   setVal('ev-nombre', ev.nombre || '');
   setVal('ev-tipo', (ev.tipoEnsaio && ev.tipoEnsaio !== 'todos') ? ev.tipoEnsaio : TIPO_DEFAULT);
@@ -6346,6 +8125,8 @@ function fillEvalForm(id){
   setVal('ev-fotos', ev.fotos ? 'sim' : 'nao');
   renderEvalFieldsDraft();
   renderEvalFechasDraft();
+  applySeccionesOrdenToForm(editingSeccionesOrdenDraft);
+  setupSeccionesDnD();
   const title = document.getElementById('eval-form-title'); if(title) title.textContent = 'Editar evaluación';
   const btn = document.getElementById('btn-eval-save'); if(btn) btn.textContent = 'Actualizar evaluación';
   setEvalFormOpen(true);
@@ -6367,7 +8148,8 @@ function saveEvalFromForm(){
     fecha:(editingEvalFechasDraft || []).length > 0,
     fechas:(editingEvalFechasDraft || []).map((f,i)=>normalizeEvalFecha(f,i)).filter(f => f.label),
     fotos:(document.getElementById('ev-fotos')?.value || 'sim') === 'sim',
-    campos
+    campos,
+    seccionesOrden: getSeccionesOrdenFromDom()
   };
   if(oldIdx >= 0) evaluacionesConfig[oldIdx] = ev; else evaluacionesConfig.push(ev);
   evaluacionesConfig.sort((a,b)=>(Number(a.orden)||0)-(Number(b.orden)||0));
@@ -6425,7 +8207,7 @@ function getEvalFieldSummary(campos){
   const perguntas = normalized.filter(c => c.tipo !== 'tabela').length;
   const tabelas = normalized.filter(c => c.tipo === 'tabela').length;
   const parts = [];
-  if(perguntas) parts.push(perguntas + ' ' + (perguntas === 1 ? 'pregunta' : 'preguntas'));
+  if(perguntas) parts.push(perguntas + ' ' + (perguntas === 1 ? 'preg.' : 'preg.'));
   if(tabelas) parts.push(tabelas + ' ' + (tabelas === 1 ? 'tabla' : 'tablas'));
   return parts.length ? parts.join(' · ') : 'Sin campos';
 }
@@ -6436,7 +8218,12 @@ function renderEvaluacionesAdmin(){
   const hint = document.getElementById('eval-filter-hint');
   const total = evaluacionesConfig.length;
   const evals = evalAdminFilteredList();
-  if(count) count.textContent = !evalAdminFilterTipo ? (total + (total === 1 ? ' evaluación' : ' evaluaciones')) : (evals.length + ' de ' + total + ' evaluaciones');
+  const historySection = document.querySelector('.eval-history-section');
+  if(historySection) historySection.style.display = evalAdminFilterTipo ? '' : 'none';
+  if(count){
+    if(!evalAdminFilterTipo){ count.textContent = ''; count.style.display = 'none'; }
+    else { count.textContent = evals.length + (evals.length === 1 ? ' evaluación' : ' evaluaciones'); count.style.display = ''; }
+  }
   if(hint) hint.textContent = !evalAdminFilterTipo
     ? 'Elegí un tipo de ensayo arriba para ver y ajustar el orden de sus evaluaciones.'
     : `Este es el orden real en que aparecerán las evaluaciones para "${TIPOS[evalAdminFilterTipo]?.label || evalAdminFilterTipo}".`;
@@ -6450,7 +8237,7 @@ function renderEvaluacionesAdmin(){
       <div class="eval-admin-drag-handle" title="Arrastrar para ordenar" aria-label="Arrastrar para ordenar">☰</div>
       <div class="eval-admin-body">
         <div class="eval-admin-title">${escapeHtml(ev.nombre)}${ev.momento ? ' • ' + escapeHtml(ev.momento) : ''}</div>
-        <div class="eval-admin-meta">${ev.fecha !== false ? 'Con fecha' : 'Sin fecha'} · ${ev.fotos ? 'Con fotos' : 'Sin fotos'} · ${getEvalFieldSummary(ev.campos)}</div>
+        <div class="eval-admin-meta">${ev.fecha !== false ? 'Fecha' : 'Sin fecha'} · ${ev.fotos ? 'Fotos' : 'Sin fotos'} · ${getEvalFieldSummary(ev.campos)}</div>
       </div>
       <div class="eval-admin-actions">
         <button type="button" class="eval-icon-btn" data-edit-eval="${ev.id}" title="Editar" aria-label="Editar">${editIcon}</button>
@@ -6473,6 +8260,56 @@ function renderEvaluacionesAdmin(){
   });
   list.querySelectorAll('[data-edit-eval]').forEach(btn => btn.addEventListener('click', () => fillEvalForm(btn.dataset.editEval)));
   list.querySelectorAll('[data-delete-eval]').forEach(btn => btn.addEventListener('click', () => deleteEval(btn.dataset.deleteEval)));
+}
+/* Consultar evaluaciones: selector de tipo de ensayo (dinámico, solo tipos con evaluaciones registradas) */
+function ensureEvalConsultaOverlay(){
+  let overlay = document.getElementById('eval-consulta-overlay');
+  if(overlay) return overlay;
+  overlay = document.createElement('div');
+  overlay.id = 'eval-consulta-overlay';
+  overlay.className = 'estadio-picker-overlay';
+  overlay.innerHTML = `
+    <div class="estadio-picker-sheet" role="dialog" aria-modal="true">
+      <div class="estadio-picker-head">
+        <div><div class="estadio-picker-title">Consultar evaluaciones</div><div class="estadio-picker-sub">¿Qué tipo de evaluación querés ver?</div></div>
+      </div>
+      <div class="estadio-picker-list" id="eval-consulta-list"></div>
+      <div class="estadio-picker-actions">
+        <button class="btn btn-secondary" type="button" id="btn-eval-consulta-cancel">Cancelar</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', ev => { if(ev.target === overlay) overlay.classList.remove('open'); });
+  overlay.querySelector('#btn-eval-consulta-cancel').addEventListener('click', () => overlay.classList.remove('open'));
+  return overlay;
+}
+function openEvalConsultaPicker(){
+  const overlay = ensureEvalConsultaOverlay();
+  const list = overlay.querySelector('#eval-consulta-list');
+  const tiposComEval = new Set(evaluacionesConfig.map(ev => ev.tipoEnsaio || TIPO_DEFAULT));
+  const opciones = Object.values(TIPOS).filter(t => tiposComEval.has(t.key));
+  if(!opciones.length){
+    list.innerHTML = '<div class="empty-note">Todavía no hay evaluaciones registradas. Agregá una nueva evaluación primero.</div>';
+  } else {
+    list.innerHTML = opciones.map(t => {
+      const n = evaluacionesConfig.filter(ev => (ev.tipoEnsaio || TIPO_DEFAULT) === t.key).length;
+      const active = t.key === evalAdminFilterTipo;
+      return `<button type="button" class="estadio-picker-row ${active ? 'active' : ''}" data-consulta-tipo="${escapeHtml(t.key)}">
+        <span class="estadio-picker-check"><svg class="ic" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span class="estadio-picker-main"><span class="estadio-picker-code" style="display:block;">${escapeHtml(t.label)}</span><span class="estadio-picker-desc" style="display:block;">${n} ${n === 1 ? 'evaluación' : 'evaluaciones'}</span></span>
+      </button>`;
+    }).join('');
+    list.querySelectorAll('[data-consulta-tipo]').forEach(row => {
+      row.addEventListener('click', () => {
+        evalAdminFilterTipo = row.dataset.consultaTipo;
+        overlay.classList.remove('open');
+        renderEvaluacionesAdmin();
+        const section = document.querySelector('.eval-history-section');
+        if(section) section.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+  }
+  overlay.classList.add('open');
 }
 function showAdminEvaluaciones(){
   const home = document.getElementById('admin-home-panel');
@@ -6732,20 +8569,23 @@ function renderDynamicField(ev, data, rawCampo, i){
     data.tablas = data.tablas || {};
     data.tablas[campo.id] = ensureTableShape(data.tablas[campo.id], campo);
     const emptyCls = tableDataHasValue(data.tablas[campo.id], campo) ? '' : ' empty';
-    return `<div class="eval-accordion-item${emptyCls}" data-dyn-eval-item="${i}">
-      <button type="button" class="eval-accordion-toggle" data-dyn-toggle="${i}">
-        <span class="dot"></span><span>${escapeHtml(campo.label)}${(campo.scope || 'comparativo') === 'geral' ? ' · Única' : ''}</span><span class="eval-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
-      </button>
+    return `<div class="eval-accordion-item table-content-only open${emptyCls}" data-dyn-eval-item="${i}">
+      <div class="eval-table-simple-title"><span class="dot"></span><span>${escapeHtml(campo.label)}</span></div>
       <div class="eval-accordion-panel"><div id="dyn-table-${escapeHtml(campo.id)}"></div></div>
     </div>`;
   }
   const val = data.campos[campo.id] || data.campos[campo.label] || '';
-  const emptyCls = val.trim() ? '' : ' empty';
+  const emptyCls = String(val).trim() ? '' : ' empty';
+  let answerHtml = `<textarea class="dyn-eval-campo" data-campo="${escapeHtml(campo.id)}" placeholder="Describe lo observado...">${escapeHtml(val)}</textarea>`;
+  if(campo.respostaTipo === 'sim_nao' || campo.respostaTipo === 'opcoes'){
+    const opts = campo.respostaTipo === 'sim_nao' ? ['Sim','Não'] : (campo.opcoes || []);
+    answerHtml = `<div class="dyn-choice-list">${opts.map(opt => `<label class="dyn-choice-option"><input type="radio" name="dyn-${escapeHtml(campo.id)}" class="dyn-eval-choice" data-campo="${escapeHtml(campo.id)}" value="${escapeHtml(opt)}" ${String(val) === String(opt) ? 'checked' : ''}><span>${escapeHtml(opt)}</span></label>`).join('')}</div>`;
+  }
   return `<div class="eval-accordion-item${emptyCls}" data-dyn-eval-item="${i}">
     <button type="button" class="eval-accordion-toggle" data-dyn-toggle="${i}">
       <span class="dot"></span><span>${escapeHtml(campo.label)}</span><span class="eval-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
     </button>
-    <div class="eval-accordion-panel"><textarea class="dyn-eval-campo" data-campo="${escapeHtml(campo.id)}" placeholder="Describe lo observado...">${escapeHtml(val)}</textarea></div>
+    <div class="eval-accordion-panel">${answerHtml}</div>
   </div>`;
 }
 function currentEvalConfig(){ return getEvalConfigByKey(currentEtapaKey); }
@@ -6790,10 +8630,24 @@ function renderDynamicEvalStep(){
     data.tablas[c.id] = ensureTableShape(data.tablas[c.id], c);
     return tableDataHasValue(data.tablas[c.id], c);
   }).length;
-  sec.innerHTML = `
-    ${ev.fecha !== false && evalFechas.length ? `<div class="eval-date-field-list">${evalFechas.map(f => `<div class="eval-date-block"><div class="field-group"><label class="field-label"><span>${escapeHtml(f.label)}</span>${evalProgressBadge(data.fechas[f.id] ? 1 : 0, 1)}</label><input type="date" class="dyn-eval-fecha" data-fecha-id="${escapeHtml(f.id)}" value="${escapeHtml(data.fechas[f.id] || '')}"></div></div>`).join('')}</div>` : ''}
-
-    ${ev.fotos ? `<div class="eval-plain-section" id="eval-photo-section">
+  const seccionesHtml = {
+    fecha: (ev.fecha !== false && evalFechas.length) ? `<div class="eval-plain-section" id="eval-date-section">
+      <button type="button" class="eval-plain-toggle" data-plain-section-toggle="eval-date-section">
+        <span class="eval-title-left"><span>Fecha</span>${evalProgressBadge(fechaDone, evalFechas.length)}</span>
+        <span class="eval-plain-toggle-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </button>
+      <div class="eval-plain-panel">
+        <div class="eval-date-field-list">
+          ${evalFechas.map((f) => `<div class="eval-date-row">
+            <div class="eval-date-combo">
+              <div class="eval-date-combo-label">${escapeHtml(f.label)}</div>
+              <input type="date" class="dyn-eval-fecha" data-fecha-id="${escapeHtml(f.id)}" value="${escapeHtml(data.fechas[f.id] || '')}">
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>` : '',
+    fotos: ev.fotos ? `<div class="eval-plain-section" id="eval-photo-section">
       <button type="button" class="eval-plain-toggle" data-plain-section-toggle="eval-photo-section">
         <span class="eval-title-left"><span>Fotos</span>${evalPhotoProgressBadge(data.fotos)}</span>
         <span class="eval-plain-toggle-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
@@ -6804,23 +8658,23 @@ function renderDynamicEvalStep(){
           <div class="photo-grid" id="grid-dyn-eval-fotos"></div>
         </div>
       </div>
-    </div>` : ''}
-
-    ${preguntasEvaluacion.length ? `<div class="eval-plain-section" id="eval-questions-section">
+    </div>` : '',
+    pregunta: preguntasEvaluacion.length ? `<div class="eval-plain-section" id="eval-questions-section">
       <button type="button" class="eval-plain-toggle" data-plain-section-toggle="eval-questions-section">
         <span class="eval-title-left"><span>Preguntas</span>${evalProgressBadge(preguntasDone, preguntasEvaluacion.length)}</span>
         <span class="eval-plain-toggle-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </button>
       <div class="eval-plain-panel"><div class="eval-questions-list">${preguntasEvaluacion.map(item => renderDynamicField(ev, data, item.campo, item.i)).join('')}</div></div>
-    </div>` : ''}
-
-    ${tablasEvaluacion.length ? `<div class="eval-plain-section" id="eval-table-section">
+    </div>` : '',
+    tabla: tablasEvaluacion.length ? `<div class="eval-plain-section" id="eval-table-section">
       <button type="button" class="eval-plain-toggle" data-plain-section-toggle="eval-table-section">
         <span class="eval-title-left"><span>Tabla</span>${evalProgressBadge(tablasDone, tablasEvaluacion.length)}</span>
         <span class="eval-plain-toggle-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </button>
       <div class="eval-plain-panel"><div class="eval-tables-list">${tablasEvaluacion.map(item => renderDynamicField(ev, data, item.campo, item.i)).join('')}</div></div>
-    </div>` : ''}`;
+    </div>` : ''
+  };
+  sec.innerHTML = normalizeSeccionesOrden(ev.seccionesOrden).map(key => seccionesHtml[key] || '').join('');
   tablasEvaluacion.forEach(item => { const c = item.normalizado; renderConfigTable('dyn-table-'+c.id, data.tablas[c.id], c); });
   sec.querySelectorAll('.dyn-eval-fecha').forEach(fecha => {
     fecha.addEventListener('input', () => {
@@ -6843,7 +8697,12 @@ function renderDynamicEvalStep(){
   sec.querySelectorAll('[data-plain-section-toggle]').forEach(btn => {
     btn.addEventListener('click', () => {
       const section = document.getElementById(btn.dataset.plainSectionToggle);
-      if(section) section.classList.toggle('open');
+      if(!section) return;
+      const willOpen = !section.classList.contains('open');
+      sec.querySelectorAll('.eval-plain-section.open').forEach(openSection => {
+        if(openSection !== section) openSection.classList.remove('open');
+      });
+      section.classList.toggle('open', willOpen);
     });
   });
   sec.querySelectorAll('[data-dyn-toggle]').forEach(btn => {
@@ -6860,8 +8719,25 @@ function renderDynamicEvalStep(){
       saveCurrent();
     });
   });
+  sec.querySelectorAll('.dyn-eval-choice').forEach(choice => {
+    choice.addEventListener('change', () => {
+      data.campos[choice.dataset.campo] = choice.value;
+      const item = choice.closest('.eval-accordion-item');
+      if(item) item.classList.toggle('empty', !choice.value.trim());
+      saveCurrent();
+      renderDynamicEvalStep();
+    });
+  });
 }
 
+function etapaFinalActionLabel(etapa, idx, total){
+  if(idx !== total - 1) return null;
+  if(currentEtapaKey === 'instalacion'){
+    const pct = instalacionProgress(current);
+    return pct >= 100 ? 'Finalizar' : 'Guardar etapa';
+  }
+  return 'Guardar etapa';
+}
 function renderStep(){
   if(currentStep === 6) renderDynamicEvalStep();
   document.querySelectorAll('.step').forEach(s => s.classList.toggle('active', parseInt(s.dataset.step) === currentStep));
@@ -6886,7 +8762,8 @@ function renderStep(){
     prevBtn.innerHTML = '<svg class="ic" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Anterior';
   }
   if(idx === total - 1){
-    nextBtn.innerHTML = 'Guardar etapa <svg class="ic" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+    const actionLabel = etapaFinalActionLabel(etapa, idx, total) || 'Guardar etapa';
+    nextBtn.innerHTML = actionLabel + ' <svg class="ic" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
   } else {
     nextBtn.innerHTML = 'Siguiente <svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>';
   }
@@ -6929,7 +8806,8 @@ document.getElementById('btn-admin-products').addEventListener('click', showAdmi
 document.getElementById('btn-admin-evaluaciones').addEventListener('click', showAdminEvaluaciones);
 document.getElementById('btn-admin-estadios').addEventListener('click', showAdminEstadios);
 document.getElementById('btn-eval-new').addEventListener('click', startNewEval);
-document.getElementById('btn-eval-clear').addEventListener('click', clearEvalForm);
+document.getElementById('btn-eval-consultar')?.addEventListener('click', openEvalConsultaPicker);
+document.getElementById('btn-eval-clear').addEventListener('click', cancelEvalForm);
 document.getElementById('btn-eval-save').addEventListener('click', saveEvalFromForm);
 document.getElementById('btn-eval-date-add')?.addEventListener('click', addEvalFechaFromForm);
 document.getElementById('ev-field-type')?.addEventListener('change', updateEvalFieldTypeUI);
@@ -7202,7 +9080,6 @@ function generateReportPdf(){
   }
   .treatment-body .field-spacer{display:none !important;}
 }
-
 
 
 /* v111 - recalibração visual definitiva dos campos de aplicação
@@ -7492,7 +9369,104 @@ function generateReportPdf(){
   gap:8px !important;
 }
 
-</style></head><body><div class="report"><div class="cover"><h1>${escapeHtml(title)}</h1><p>${escapeHtml(sub)}</p></div>${clone.innerHTML}</div><script>window.onload=function(){setTimeout(function(){window.print();},400);};<\/script></body></html>`;
+</style></head><body><div class="report"><div class="cover"><h1>${escapeHtml(title)}</h1><p>${escapeHtml(sub)}</p></div>${clone.innerHTML}</div><script>window.onload=function(){setTimeout(function(){window.print();},400);};<\/script>
+
+<style id="fix-produto-mescla-acoes-minimalistas">
+/* Produto/Mescla: campo único 38px com ações minimalistas */
+.step[data-step="3"] .product-selected-card.product-selected-card-compact{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  width:100% !important;
+  height:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  padding:0 4px 0 12px !important;
+  margin:0 !important;
+  gap:8px !important;
+  border:1px solid var(--line) !important;
+  border-radius:10px !important;
+  background:var(--surface) !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-info{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  overflow:hidden !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-name{
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:var(--forest) !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+  line-height:38px !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  text-align:left !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-actions{
+  flex:0 0 auto !important;
+  height:38px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  width:38px !important;
+  height:38px !important;
+  min-width:38px !important;
+  max-width:38px !important;
+  min-height:38px !important;
+  max-height:38px !important;
+  flex:0 0 38px !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  outline:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+  color:var(--forest) !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn{
+  color:var(--danger) !important;
+  border-left:1px solid var(--line) !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn:active,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn:active{
+  background:rgba(0,0,0,0.04) !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-change-btn svg,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-delete-btn svg{
+  width:17px !important;
+  height:17px !important;
+  display:block !important;
+  stroke:currentColor !important;
+}
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-icon,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-title,
+.step[data-step="3"] .product-selected-card.product-selected-card-compact .product-selected-meta{
+  display:none !important;
+}
+</style>
+</body></html>`;
   const w = window.open('', '_blank');
   if(!w){ alert('Permita pop-ups para gerar o relatório em PDF.'); return; }
   w.document.open();
@@ -7514,13 +9488,23 @@ function renderDetailBody(e){
     <div class="etapa-list">
       ${etapas.map(et => {
         const status = et.status ? et.status(e) : (et.estaCompleta(e) ? 'complete' : 'empty');
-        const done = status === 'complete';
-        const partial = status === 'partial';
+        const pct = et.progress ? et.progress(e) : (status === 'complete' ? 100 : (status === 'partial' ? 50 : 0));
+        const done = pct >= 100 || status === 'complete';
+        const partial = pct > 0 && pct < 100;
+        const empty = pct <= 0;
         const icon = done ? '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : (partial ? '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg>' : '');
-        return `<button type="button" class="etapa-row${done ? ' done' : ''}${partial ? ' partial' : ''}" data-etapa="${et.key}" onclick="openEtapaFromDetail('${et.key}')">
+        return `<button type="button" class="etapa-row${done ? ' done' : ''}${partial ? ' partial' : ''}${empty ? ' empty' : ''}" data-etapa="${et.key}" data-progress="${pct}" onclick="return handleEtapaProgressCardClick(event,'${et.key}')">
           <span class="etapa-check">${icon}</span>
-          <span class="etapa-row-label">${escapeHtml(et.label)}</span>
-          <svg class="ic etapa-row-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          <span class="etapa-row-content">
+            <span class="etapa-row-main">
+              <span class="etapa-row-label">${escapeHtml(et.label)}</span>
+            </span>
+            <span class="etapa-progress-line" aria-label="Progreso ${pct}%">
+              <span class="etapa-progress-track"><span class="etapa-progress-fill" style="width:${pct}%"></span></span>
+              <span class="etapa-progress-percent">${pct}%</span>
+            </span>
+          </span>
+          <span class="etapa-row-edit" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
         </button>`;
       }).join('')}
     </div>
@@ -7536,21 +9520,26 @@ function renderDetailBody(e){
       ${detailRow('Cultivo', e.dados.cultivo)}
     `), false);
 
-  html += detailCollapsible('Implementación', `
-    <div class="detail-compare-grid">
-      ${detailTreatmentBox('Somax', 'somax', e.implementacao.somax)}
-      ${detailTreatmentBox('Competidor', 'competidor', e.implementacao.competidor)}
-    </div>
-    <div class="card" style="margin-top:14px;">
-      ${detailRow('Variedad/híbrido', e.implementacao.variedade)}
-      ${detailRow('Fecha de siembra', e.implementacao.fechaSiembra)}
-      ${detailRow('Espaciamiento', e.implementacao.espaciamiento && e.implementacao.espaciamiento+' cm')}
-      ${detailRow('Población', e.implementacao.poblacion && e.implementacao.poblacion+' plantas/m')}
-      ${detailRow('Fecha de aplicación', e.implementacao.fechaAplicacion)}
-      ${detailRow('Estadio del cultivo', e.implementacao.estadio)}
-      ${detailRow('Área aplicada', e.implementacao.areaAplicada && e.implementacao.areaAplicada+' ha')}
-    </div>
-  `, false);
+  const implTreatmentHtml = [
+    detailTreatmentBox('Somax', 'somax', e.implementacao.somax),
+    detailTreatmentBox('Competidor', 'competidor', e.implementacao.competidor)
+  ].filter(Boolean).join('');
+  const implRowsHtml = [
+    detailRow('Variedad/híbrido', e.implementacao.variedade),
+    detailRow('Fecha de siembra', e.implementacao.fechaSiembra),
+    detailRow('Espaciamiento', e.implementacao.espaciamiento && e.implementacao.espaciamiento+' cm'),
+    detailRow('Población', e.implementacao.poblacion && e.implementacao.poblacion+' plantas/m'),
+    detailRow('Fecha de aplicación', e.implementacao.fechaAplicacion),
+    detailRow('Estadio del cultivo', e.implementacao.estadio),
+    detailRow('Área aplicada', e.implementacao.areaAplicada && e.implementacao.areaAplicada+' ha')
+  ].filter(Boolean).join('');
+  const implContentHtml = [
+    implTreatmentHtml ? `<div class="detail-compare-grid">${implTreatmentHtml}</div>` : '',
+    implRowsHtml ? `<div class="card" style="margin-top:${implTreatmentHtml ? '14px' : '0'};">${implRowsHtml}</div>` : ''
+  ].filter(Boolean).join('');
+  if(implContentHtml){
+    html += detailCollapsible('Implementación', implContentHtml, false);
+  }
 
   const instalacaoFotosHtml = photoStrip(e.fotosInstalacao);
   if(instalacaoFotosHtml){
@@ -7572,27 +9561,27 @@ function renderDetailBody(e){
     html += detailCollapsible(evalTitle(ev), sectionCard(evalContentHtml), false);
   });
 
-  html += detailCollapsible('Evaluación de cosecha', `<div class="treatment-card somax-treatment">
-      <div class="treatment-header treatment-header-somax"><span>SOMAX</span></div>
-      <div class="treatment-body">
-        ${detailRow('Área cosechada', formatHarvestDisplay(e.colheita.somax.area, ' ha', 2))}
-        ${detailRow('Kg cosechado', formatHarvestDisplay(e.colheita.somax.kg, '', 0))}
-        ${detailRow('Humedad', e.colheita.somax.humedad && e.colheita.somax.humedad+' %')}
-        ${detailRow('PMS', e.colheita.somax.pms && e.colheita.somax.pms+' g')}
-        ${detailRow('Resultado líquido', formatHarvestDisplay(e.colheita.somax.resultado, ' kg/ha', 0))}
-      </div>
-    </div>
-    <div class="treatment-card competitor-treatment">
-      <div class="treatment-header treatment-header-competidor"><span>COMPETIDOR</span></div>
-      <div class="treatment-body">
-        ${detailRow('Área cosechada', formatHarvestDisplay(e.colheita.competidor.area, ' ha', 2))}
-        ${detailRow('Kg cosechado', formatHarvestDisplay(e.colheita.competidor.kg, '', 0))}
-        ${detailRow('Humedad', e.colheita.competidor.humedad && e.colheita.competidor.humedad+' %')}
-        ${detailRow('PMS', e.colheita.competidor.pms && e.colheita.competidor.pms+' g')}
-        ${detailRow('Resultado líquido', formatHarvestDisplay(e.colheita.competidor.resultado, ' kg/ha', 0))}
-      </div>
-    </div>
-  </div>`, false);
+  const harvestSomaxRows = [
+    detailRow('Área cosechada', formatHarvestDisplay(e.colheita.somax.area, ' ha', 2)),
+    detailRow('Kg cosechado', formatHarvestDisplay(e.colheita.somax.kg, '', 0)),
+    detailRow('Humedad', e.colheita.somax.humedad && e.colheita.somax.humedad+' %'),
+    detailRow('PMS', e.colheita.somax.pms && e.colheita.somax.pms+' g'),
+    detailRow('Resultado líquido', formatHarvestDisplay(e.colheita.somax.resultado, ' kg/ha', 0))
+  ].filter(Boolean).join('');
+  const harvestCompetidorRows = [
+    detailRow('Área cosechada', formatHarvestDisplay(e.colheita.competidor.area, ' ha', 2)),
+    detailRow('Kg cosechado', formatHarvestDisplay(e.colheita.competidor.kg, '', 0)),
+    detailRow('Humedad', e.colheita.competidor.humedad && e.colheita.competidor.humedad+' %'),
+    detailRow('PMS', e.colheita.competidor.pms && e.colheita.competidor.pms+' g'),
+    detailRow('Resultado líquido', formatHarvestDisplay(e.colheita.competidor.resultado, ' kg/ha', 0))
+  ].filter(Boolean).join('');
+  const harvestContentHtml = [
+    harvestSomaxRows ? `<div class="treatment-card somax-treatment"><div class="treatment-header treatment-header-somax"><span>SOMAX</span></div><div class="treatment-body">${harvestSomaxRows}</div></div>` : '',
+    harvestCompetidorRows ? `<div class="treatment-card competitor-treatment"><div class="treatment-header treatment-header-competidor"><span>COMPETIDOR</span></div><div class="treatment-body">${harvestCompetidorRows}</div></div>` : ''
+  ].filter(Boolean).join('');
+  if(harvestContentHtml){
+    html += detailCollapsible('Evaluación de cosecha', harvestContentHtml, false);
+  }
 
   if(diff !== null){
     const sign = diff >= 0 ? '+' : '';
@@ -7609,24 +9598,26 @@ function renderDetailBody(e){
     html += detailCollapsible('Observaciones finales', `<div class="card"><div class="empty-note" style="font-style:normal;">${escapeHtml(e.observacoesFinais)}</div></div>`, false);
   }
 
-  html += `<div class="detail-actions" style="margin-top:8px;"><button type="button" class="btn btn-report" id="btn-report-pdf"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>Gerar relatório PDF</button></div>`;
-
-  html += `<button class="btn" style="background:transparent;color:var(--danger);border:1.5px solid var(--line);width:100%;margin-top:6px;" id="btn-delete-ensaio">
+  html += `<div class="detail-actions detail-actions-fixed">
+    <button type="button" class="btn btn-report" id="btn-report-pdf">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      PDF
+    </button>
+    <button type="button" class="btn btn-delete-fixed" id="btn-delete-ensaio">
       <svg class="ic" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-      Eliminar ensayo
-    </button>`;
+      Eliminar
+    </button>
+  </div>`;
 
   body.innerHTML = html;
   setupDetailToggles();
   const reportBtn = document.getElementById('btn-report-pdf');
   if(reportBtn) reportBtn.addEventListener('click', generateReportPdf);
 
-  body.querySelectorAll('.etapa-row').forEach(row => {
-    row.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      openEtapa(e, row.dataset.etapa);
-    });
-  });
+  // v166 - Evita alerta duplicado de pendências.
+  // A ação do card já está centralizada no onclick inline gerado em renderDetailBody().
+  // Não registrar addEventListener adicional aqui, pois no mesmo clique ele dispara
+  // a mesma função novamente após fechar o alert nativo no Android/Chrome.
 
   document.getElementById('btn-delete-ensaio').addEventListener('click', () => {
     if(confirm('¿Eliminar este ensayo definitivamente? Esta acción no se puede deshacer.')){
@@ -7656,7 +9647,6 @@ function handleEtapaRowActivation(ev){
 // document.addEventListener('touchend', handleEtapaRowActivation, true);
 
 document.getElementById('btn-detail-back').addEventListener('click', goDashboard);
-document.getElementById('btn-detail-edit').addEventListener('click', () => openEtapa(current, etapasFor((current && current.tipo) || TIPO_DEFAULT)[0].key));
 
 /* =========================================================
    DADOS DE EJEMPLO (DEMO_ENSAIO definido más abajo)
@@ -7723,11 +9713,6 @@ loadEnsaios();
 seedDemoIfNeeded();
 renderDashboard();
 
-function setAdminSubtitle(txt){
-  const el = document.getElementById('admin-subtitle');
-  if(el) el.textContent = txt || 'Área administrativa';
-}
-
 
 /* v57 - ações separadas para pergunta e tabela */
 function syncEditingEvalDraftToConfig(){
@@ -7747,8 +9732,24 @@ function syncEditingEvalDraftToConfig(){
 }
 function clearQuestionDraft(){
   setVal('ev-field-label','');
+  setVal('ev-field-response-type','texto');
+  setVal('ev-field-options','');
+  updateQuestionResponseTypeUI();
 }
 
+
+function updateQuestionResponseTypeUI(){
+  const type = document.getElementById('ev-field-response-type')?.value || 'texto';
+  const wrap = document.getElementById('ev-field-options-wrap');
+  if(wrap) wrap.classList.toggle('show', type === 'opcoes');
+}
+function getQuestionResponseDraft(){
+  const respostaTipo = document.getElementById('ev-field-response-type')?.value || 'texto';
+  const opcoes = respostaTipo === 'opcoes'
+    ? (document.getElementById('ev-field-options')?.value || '').split(',').map(x=>x.trim()).filter(Boolean)
+    : [];
+  return {respostaTipo, opcoes};
+}
 function getTableScope(){
   return document.getElementById('ev-table-scope-geral')?.checked ? 'geral' : 'comparativo';
 }
@@ -7771,7 +9772,9 @@ function clearTableDraft(){
 function addEvalQuestionV57(){
   const label = (document.getElementById('ev-field-label')?.value || '').trim();
   if(!label){ alert('Informe o título da pergunta.'); return; }
-  const novoCampo = normalizeEvalCampo({tipo:'texto', label});
+  const draft = getQuestionResponseDraft();
+  if(draft.respostaTipo === 'opcoes' && !draft.opcoes.length){ alert('Informe ao menos uma opção de resposta.'); return; }
+  const novoCampo = normalizeEvalCampo({tipo:'texto', label, respostaTipo:draft.respostaTipo, opcoes:draft.opcoes});
   if(editingEvalFieldIndex !== null && editingEvalCamposDraft[editingEvalFieldIndex] && normalizeEvalCampo(editingEvalCamposDraft[editingEvalFieldIndex]).tipo !== 'tabela'){
     editingEvalCamposDraft[editingEvalFieldIndex] = novoCampo;
     editingEvalFieldIndex = null;
@@ -7850,24 +9853,42 @@ document.addEventListener('click', function(ev){
     if(box) box.classList.toggle('open');
   }
 });
+document.getElementById('ev-field-response-type')?.addEventListener('change', updateQuestionResponseTypeUI);
 document.getElementById('btn-eval-question-add')?.addEventListener('click', addEvalQuestionV57);
 document.getElementById('ev-fotos')?.addEventListener('change', updateAccordionBadges);
 document.getElementById('btn-eval-table-new')?.addEventListener('click', ()=>{ editingEvalFieldIndex = null; clearTableDraft(); setEvalTableBuilderOpen(true); document.getElementById('accordion-table')?.classList.add('open'); });
 document.getElementById('btn-eval-table-cancel')?.addEventListener('click', ()=>{ editingEvalFieldIndex = null; clearTableDraft(); setEvalTableBuilderOpen(false); });
 document.getElementById('btn-eval-table-add')?.addEventListener('click', addEvalTableV57);
 
+
+/* vXXX - Acordeão SOMAX/COMPETIDOR sem quebrar o script principal */
+function setImplementationPanel(target){
+  var panels = document.querySelectorAll('[data-implementation-panel]');
+  panels.forEach(function(panel){
+    var isTarget = panel.getAttribute('data-implementation-panel') === target;
+    panel.classList.toggle('open', isTarget);
+    panel.classList.toggle('collapsed', !isTarget);
+    var btn = panel.querySelector('[data-implementation-toggle]');
+    if(btn) btn.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
+  });
+}
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('[data-implementation-toggle]');
+  if(!btn) return;
+  e.preventDefault();
+  var target = btn.getAttribute('data-implementation-toggle');
+  var panel = btn.closest('[data-implementation-panel]');
+  if(panel && panel.classList.contains('collapsed')){
+    setImplementationPanel(target);
+  }else if(panel){
+    panel.classList.add('collapsed');
+    panel.classList.remove('open');
+    btn.setAttribute('aria-expanded','false');
+  }
+});
 </script>
+
+
 </body>
 </html>
 
-<style>
-/* v147 - separação entre ações do formulário e lista de avaliações registradas */
-#eval-form-card > .product-form-actions{
-  margin-bottom:26px !important;
-  padding-bottom:18px !important;
-  border-bottom:1px solid var(--line) !important;
-}
-#eval-form-card + .products-header-row{
-  margin-top:8px !important;
-}
-</style>
