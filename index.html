@@ -4227,8 +4227,15 @@ function migrarEvaluacionesAntiguas(ensaio){
     if(d && tableField){
       d.tablas = d.tablas || {};
       const tbl = ensureTableShape(d.tablas[tableField.id], tableField);
-      ['somax','competidor'].forEach(trat => {
-        const legacy = ensaio.av3[trat];
+      // Compatibilidade: avaliações antigas (av3) tinham sempre somax/competidor.
+      // Se a tabela atual foi configurada como Tabela Única, o shape passa a usar apenas `geral`.
+      // Sem esta proteção, ao abrir o ensaio o código tentava acessar tbl.somax/tbl.competidor
+      // e quebrava a navegação.
+      const legacyTargetMap = (tableField.scope || 'comparativo') === 'geral'
+        ? [['geral', ensaio.av3.somax || ensaio.av3.competidor]]
+        : [['somax', ensaio.av3.somax], ['competidor', ensaio.av3.competidor]];
+      legacyTargetMap.forEach(([trat, legacy]) => {
+        if(!tbl[trat] || !Array.isArray(tbl[trat].puntos)) return;
         if(!legacy || !Array.isArray(legacy.puntos)) return;
         legacy.puntos.forEach((p, pi) => {
           if(!tbl[trat].puntos[pi]) return;
@@ -7040,6 +7047,7 @@ function detailDynamicTableHtml(table, field){
   const scopes = ((field.scope || 'comparativo') === 'geral') ? ['geral'] : ['somax','competidor'];
   return scopes.map(trat => {
     const rows = [];
+    if(!table[trat] || !Array.isArray(table[trat].puntos)) return '';
     (table[trat].puntos || []).forEach((p, pi) => {
       (p.muestras || []).forEach((m, mi) => {
         const vals = cols.map(col => String(m[col.key] || '').trim());
