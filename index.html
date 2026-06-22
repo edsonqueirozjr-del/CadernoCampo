@@ -1456,6 +1456,16 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
 
 
 
+
+/* v152 - Escopo da tabela: comparativo vs tabela única do ensaio */
+.table-scope-options{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.table-scope-option{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:center;cursor:pointer;min-height:54px;}
+.table-scope-option input{margin-top:0;accent-color:var(--forest);flex-shrink:0;}
+.table-scope-option:has(input:checked){border-color:var(--leaf);background:var(--leaf-light);}
+.table-scope-title{font-size:14px;font-weight:900;color:var(--forest);line-height:1.2;}
+.table-scope-desc{font-size:11.5px;color:var(--ink-soft);line-height:1.35;margin-top:2px;}
+.eval-scope-chip{display:inline-flex;align-items:center;border-radius:999px;background:var(--leaf-light);color:var(--forest);padding:3px 8px;font-size:10.5px;font-weight:900;margin-top:4px;}
+
 /* v141 - tabela dinâmica genérica de coleta */
 .collection-structure-card,.table-preview-card{
   background:var(--paper);
@@ -3333,6 +3343,20 @@ table.muestras-table input{ padding:7px 8px; font-size:13px; }
                 <div class="eval-table-builder" id="eval-table-builder">
                   <div class="field-group"><label class="field-label">Título de la tabla</label><input type="text" id="ev-table-label" placeholder="Ej. Biometria de plantas"></div>
 
+                  <div class="field-group">
+                    <label class="field-label">Aplicação da tabela</label>
+                    <div class="table-scope-options">
+                      <label class="table-scope-option">
+                        <input type="radio" name="ev-table-scope" id="ev-table-scope-comparativo" value="comparativo" checked>
+                        <span class="table-scope-title">Tabela com comparativo</span>
+                      </label>
+                      <label class="table-scope-option">
+                        <input type="radio" name="ev-table-scope" id="ev-table-scope-geral" value="geral">
+                        <span class="table-scope-title">Tabela única</span>
+                      </label>
+                    </div>
+                  </div>
+
                   <div class="collection-structure-card">
                     <div class="collection-structure-title">Estrutura da coleta</div>
                     <div class="collection-structure-sub">Configure uma tabela dinâmica genérica para qualquer tipo de avaliação.</div>
@@ -4041,6 +4065,7 @@ function normalizeEvalCampo(c, idx){
     }).filter(col => col.label);
     return {
       id, tipo, label,
+      scope:(c.scope || c.escopo || c.aplicacao || 'comparativo') === 'geral' ? 'geral' : 'comparativo',
       abaLabel:c.abaLabel || c.abasLabel || c.pontoLabel || c.entidadeAbas || 'Ponto',
       linhaLabel:c.linhaLabel || c.lineLabel || c.muestraLabel || c.entidadeLinhas || 'Planta',
       pontos:Number(c.pontos || c.puntos || c.abasQtd || 3),
@@ -4066,11 +4091,14 @@ function createEmptyTableData(field){
   const pts = Math.max(1, Number(field.pontos || 3));
   const ms = Math.max(1, Number(field.muestras || 5));
   const cols = field.columnas || [];
-  return {somax:{puntos:Array.from({length:pts},()=>({muestras:Array.from({length:ms},()=>Object.fromEntries(cols.map(c=>[c.key,''])))}))},competidor:{puntos:Array.from({length:pts},()=>({muestras:Array.from({length:ms},()=>Object.fromEntries(cols.map(c=>[c.key,''])))}))}};
+  const emptyTrat = () => ({puntos:Array.from({length:pts},()=>({muestras:Array.from({length:ms},()=>Object.fromEntries(cols.map(c=>[c.key,''])))}))});
+  if((field.scope || 'comparativo') === 'geral') return {geral:emptyTrat()};
+  return {somax:emptyTrat(),competidor:emptyTrat()};
 }
 function ensureTableShape(table, field){
   if(!table || typeof table !== 'object') table = createEmptyTableData(field);
-  ['somax','competidor'].forEach(trat => {
+  const tableScopes = ((field.scope || 'comparativo') === 'geral') ? ['geral'] : ['somax','competidor'];
+  tableScopes.forEach(trat => {
     if(!table[trat]) table[trat] = {puntos:[]};
     if(!Array.isArray(table[trat].puntos)) table[trat].puntos = [];
     const pts = Math.max(1, Number(field.pontos || 3));
@@ -6145,7 +6173,7 @@ function renderEvalFieldsDraft(){
   const makeCard = (campoRaw, i) => {
     const campo = normalizeEvalCampo(campoRaw, i);
     const isTable = campo.tipo === 'tabela';
-    const meta = isTable ? `<div class="eval-table-meta-grid"><span><b>Abas:</b> ${escapeHtml(campo.abaLabel || 'Ponto')} (${campo.pontos || 3})</span><span><b>Linhas:</b> ${escapeHtml(campo.linhaLabel || 'Planta')} (${campo.muestras || 5})</span><span><b>Colunas:</b> ${(campo.columnas || []).length} colunas</span></div>` : 'Texto';
+    const meta = isTable ? `<div class="eval-table-meta-grid"><span><b>Aplicação:</b> ${(campo.scope || 'comparativo') === 'geral' ? 'Tabela única' : 'Tabela com comparativo'}</span><span><b>Abas:</b> ${escapeHtml(campo.abaLabel || 'Ponto')} (${campo.pontos || 3})</span><span><b>Linhas:</b> ${escapeHtml(campo.linhaLabel || 'Planta')} (${campo.muestras || 5})</span><span><b>Colunas:</b> ${(campo.columnas || []).length} colunas</span></div>` : 'Texto';
     return `<div class="eval-field-admin-card ${isTable ? 'table-card' : 'question-card'}" draggable="true" data-draft-field-card="${i}" data-draft-field-type="${isTable ? 'tabela' : 'texto'}">
       <div class="eval-field-drag-handle" title="Arrastrar para ordenar" aria-label="Arrastrar para ordenar">☰</div>
       <div class="eval-field-card-main"><div class="eval-field-admin-title">${escapeHtml(campo.label)}</div><div class="eval-field-admin-meta">${meta}</div></div>
@@ -6179,7 +6207,7 @@ function renderEvalFieldsDraft(){
   });
   document.querySelectorAll('[data-edit-eval-field]').forEach(btn => btn.addEventListener('click',()=>{
     const idx = Number(btn.dataset.editEvalField); const campo = normalizeEvalCampo(editingEvalCamposDraft[idx], idx); editingEvalFieldIndex = idx;
-    if(campo.tipo === 'tabela'){ setVal('ev-table-label', campo.label || ''); setVal('ev-table-aba-label', campo.abaLabel || 'Ponto'); setVal('ev-table-linha-label', campo.linhaLabel || 'Planta'); setVal('ev-table-pontos', String(campo.pontos || 3)); setVal('ev-table-muestras', String(campo.muestras || 5)); setVal('ev-table-cols', (campo.columnas || []).map(col => col.label).join(', ')); updateTablePreviewV141(); document.getElementById('accordion-table')?.classList.add('open'); setEvalTableBuilderOpen(true); }
+    if(campo.tipo === 'tabela'){ setVal('ev-table-label', campo.label || ''); setTableScope(campo.scope || 'comparativo'); setVal('ev-table-aba-label', campo.abaLabel || 'Ponto'); setVal('ev-table-linha-label', campo.linhaLabel || 'Planta'); setVal('ev-table-pontos', String(campo.pontos || 3)); setVal('ev-table-muestras', String(campo.muestras || 5)); setVal('ev-table-cols', (campo.columnas || []).map(col => col.label).join(', ')); updateTablePreviewV141(); document.getElementById('accordion-table')?.classList.add('open'); setEvalTableBuilderOpen(true); }
     else { setVal('ev-field-label', campo.label || ''); document.getElementById('accordion-question')?.classList.add('open'); }
   }));
   document.querySelectorAll('[data-remove-eval-field]').forEach(btn => btn.addEventListener('click',()=>{ const idx=Number(btn.dataset.removeEvalField); editingEvalCamposDraft.splice(idx,1); if(editingEvalFieldIndex===idx) editingEvalFieldIndex=null; else if(editingEvalFieldIndex!==null && editingEvalFieldIndex>idx) editingEvalFieldIndex--; renderEvalFieldsDraft(); syncEditingEvalDraftToConfig(); }));
@@ -6650,16 +6678,18 @@ function renderProductsAdmin(){
 
 function tableDataHasValue(tbl, field){
   if(!tbl) return false;
-  return ['somax','competidor'].some(t => (tbl[t]?.puntos||[]).some(p => (p.muestras||[]).some(m => (field.columnas||[]).some(col => String(m[col.key]||'').trim() !== ''))));
+  const scopes = ((field.scope || 'comparativo') === 'geral') ? ['geral'] : ['somax','competidor'];
+  return scopes.some(t => (tbl[t]?.puntos||[]).some(p => (p.muestras||[]).some(m => (field.columnas||[]).some(col => String(m[col.key]||'').trim() !== ''))));
 }
 function renderConfigTable(containerId, tableData, field){
   const el = document.getElementById(containerId); if(!el) return;
   tableData = ensureTableShape(tableData, field);
   const abaLabel = (field.abaLabel || 'Ponto').trim();
   const linhaLabel = (field.linhaLabel || 'Planta').trim();
-  const treatmentNames = {somax:'Somax', competidor:'Competidor'};
-  el.innerHTML = ['somax','competidor'].map(trat => {
-    const colorClass = trat === 'somax' ? 'treatment-header-somax' : 'treatment-header-competidor';
+  const treatmentNames = {somax:'Somax', competidor:'Competidor', geral:'Tabela única'};
+  const scopes = ((field.scope || 'comparativo') === 'geral') ? ['geral'] : ['somax','competidor'];
+  el.innerHTML = scopes.map(trat => {
+    const colorClass = trat === 'somax' || trat === 'geral' ? 'treatment-header-somax' : 'treatment-header-competidor';
     const tbl = tableData[trat];
     let html = `<div class="treatment-card sample-table-card"><div class="treatment-header ${colorClass}"><span>${treatmentNames[trat]}</span></div><div class="treatment-body"><div class="punto-tabs">`;
     tbl.puntos.forEach((_,pi)=> html += `<button type="button" class="punto-tab ${pi===0?'active':''}" data-config-table="${containerId}" data-trat="${trat}" data-punto="${pi}">${escapeHtml(abaLabel)} ${pi+1}</button>`);
@@ -6696,7 +6726,7 @@ function renderDynamicField(ev, data, rawCampo, i){
     const emptyCls = tableDataHasValue(data.tablas[campo.id], campo) ? '' : ' empty';
     return `<div class="eval-accordion-item${emptyCls}" data-dyn-eval-item="${i}">
       <button type="button" class="eval-accordion-toggle" data-dyn-toggle="${i}">
-        <span class="dot"></span><span>${escapeHtml(campo.label)}</span><span class="eval-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
+        <span class="dot"></span><span>${escapeHtml(campo.label)}${(campo.scope || 'comparativo') === 'geral' ? ' · Única' : ''}</span><span class="eval-arrow"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
       </button>
       <div class="eval-accordion-panel"><div id="dyn-table-${escapeHtml(campo.id)}"></div></div>
     </div>`;
@@ -6995,7 +7025,8 @@ function photoStrip(photos){
 
 function detailTableHasValue(table, field){
   if(!table || !field) return false;
-  return ['somax','competidor'].some(trat => (table[trat] && table[trat].puntos || []).some(p => (p.muestras || []).some(m => (field.columnas || []).some(col => String(m[col.key] || '').trim() !== ''))));
+  const scopes = ((field.scope || 'comparativo') === 'geral') ? ['geral'] : ['somax','competidor'];
+  return scopes.some(trat => (table[trat] && table[trat].puntos || []).some(p => (p.muestras || []).some(m => (field.columnas || []).some(col => String(m[col.key] || '').trim() !== ''))));
 }
 
 function detailDynamicTableHtml(table, field){
@@ -7004,8 +7035,9 @@ function detailDynamicTableHtml(table, field){
     return '';
   }
   const cols = field.columnas || [];
-  const treatmentLabel = {somax:'Somax', competidor:'Competidor'};
-  return ['somax','competidor'].map(trat => {
+  const treatmentLabel = {somax:'Somax', competidor:'Competidor', geral:'Tabela única'};
+  const scopes = ((field.scope || 'comparativo') === 'geral') ? ['geral'] : ['somax','competidor'];
+  return scopes.map(trat => {
     const rows = [];
     (table[trat].puntos || []).forEach((p, pi) => {
       (p.muestras || []).forEach((m, mi) => {
@@ -7707,8 +7739,19 @@ function syncEditingEvalDraftToConfig(){
 function clearQuestionDraft(){
   setVal('ev-field-label','');
 }
+
+function getTableScope(){
+  return document.getElementById('ev-table-scope-geral')?.checked ? 'geral' : 'comparativo';
+}
+function setTableScope(scope){
+  const geral = document.getElementById('ev-table-scope-geral');
+  const comp = document.getElementById('ev-table-scope-comparativo');
+  if(geral) geral.checked = scope === 'geral';
+  if(comp) comp.checked = scope !== 'geral';
+}
 function clearTableDraft(){
   setVal('ev-table-label','');
+  setTableScope('comparativo');
   setVal('ev-table-aba-label','Ponto');
   setVal('ev-table-linha-label','Planta');
   setVal('ev-table-pontos','3');
@@ -7739,6 +7782,7 @@ function addEvalTableV57(){
   const novoCampo = normalizeEvalCampo({
     tipo:'tabela',
     label,
+    scope:getTableScope(),
     abaLabel:(document.getElementById('ev-table-aba-label')?.value || 'Ponto').trim() || 'Ponto',
     linhaLabel:(document.getElementById('ev-table-linha-label')?.value || 'Planta').trim() || 'Planta',
     pontos:document.getElementById('ev-table-pontos')?.value || 3,
@@ -7770,8 +7814,10 @@ function updateTablePreviewV141(){
   const showAbas = Math.min(abas, 8);
   const showLinhas = Math.min(linhas, 6);
   const cols = vars.length ? vars : ['Informe as colunas'];
+  const scopeLabel = getTableScope() === 'geral' ? 'Tabela única' : 'Tabela com comparativo';
   wrap.innerHTML = `
-    <div class="table-preview-label">Abas:</div>
+    <div class="eval-scope-chip">${scopeLabel}</div>
+    <div class="table-preview-label" style="margin-top:8px;">Abas:</div>
     <div class="table-preview-tabs">${Array.from({length:showAbas},(_,i)=>`<span class="table-preview-tab">${escapeHtml(aba)} ${i+1}</span>`).join('')}${abas>showAbas?`<span class="table-preview-tab">+${abas-showAbas}</span>`:''}</div>
     <div class="table-preview-label">Tabela exemplo:</div>
     <div class="table-preview-scroll">
@@ -7783,7 +7829,7 @@ function updateTablePreviewV141(){
   const total = abas * linhas * vars.length;
   complexity.innerHTML = `${abas} abas × ${linhas} linhas × ${vars.length || 0} colunas<br><b>Total: ${total} registros</b>`;
 }
-['ev-table-label','ev-table-aba-label','ev-table-linha-label','ev-table-pontos','ev-table-muestras','ev-table-cols'].forEach(id=>{
+['ev-table-label','ev-table-aba-label','ev-table-linha-label','ev-table-pontos','ev-table-muestras','ev-table-cols','ev-table-scope-comparativo','ev-table-scope-geral'].forEach(id=>{
   document.getElementById(id)?.addEventListener('input', updateTablePreviewV141);
 });
 updateTablePreviewV141();
